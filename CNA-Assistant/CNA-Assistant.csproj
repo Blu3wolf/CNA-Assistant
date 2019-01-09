@@ -55,6 +55,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="PlayerSide.cs" />
+    <Compile Include="SupplyDump.cs" />
+    <Compile Include="SupplyPoint.cs" />
     <Compile Include="TOEStrengthPointType.cs" />
     <Compile Include="Unit.cs" />
     <Compile Include="UnitType.cs" />

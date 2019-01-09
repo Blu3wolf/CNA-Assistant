@@ -10,6 +10,8 @@ namespace CNA_Assistant
     {
         public int ID;
 
+		public int Location;
+
         public int CharacteristicsCode;
 
         public string ShortDesignation;
@@ -75,8 +77,6 @@ namespace CNA_Assistant
         public bool HasAttachedUnits;
 
         public IList<Unit> AttachedUnits;
-
-        public int 
 
         public string Notes;
 
