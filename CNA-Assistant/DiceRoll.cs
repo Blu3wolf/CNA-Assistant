@@ -18,6 +18,18 @@ namespace CNA_Assistant
 			Result = rand.Next(6) + 1; // Result can be from 1 to 6 inclusive, then.
 		}
 
+		public DiceRoll(int result)
+		{
+			if (result < 7 && result > 0)
+			{
+				Result = result;
+			}
+			else
+			{
+				throw new ArgumentOutOfRangeException();
+			}
+		}
+
 		// Properties
 
 		public int Result { get; }
