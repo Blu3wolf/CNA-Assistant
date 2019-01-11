@@ -19,9 +19,21 @@ namespace CNA_Assistant
 
 		}
 
+		// Fields (backing)
+
+		private int gameTurn;
+
+		private int opStage;
+
 		// Properties
 
-		public int GameTurn; // Game Turn one through to one hundred eleven. 
+		public int GameTurn // Game Turn one through to one hundred eleven. 
+		{
+			get
+			{
+				return gameTurn;
+			}
+		}
 
 		public int OpStage; // Op Stage, zero to four - zero and four being before and after the Operations Stage of the turn. 
 
@@ -47,23 +59,32 @@ namespace CNA_Assistant
 
 		// Methods
 
-		public void NextStep() // Advances play to the next phase or step of the Sequence of Play - potentially retreating in the Sequence of Play.
+		public void TestSkipToNextGameTurn()
 		{
-
+			gameTurn += 1;
+			opStage = 0;
 		}
 
-		public void TestGetDateAtTurn(int gameTurn, int opStage)
+		public void TestGetDateAtTurn(int gt, int os)
 		{
-			GameTurn = gameTurn;
-			OpStage = opStage;
+			int curGameTurn = GameTurn;
+			int curOpStage = OpStage;
+			gameTurn = gt;
+			opStage = os;
 			Console.WriteLine(GameDate);
+			gameTurn = curGameTurn;
+			opStage = curOpStage;
 		}
 
-		public void TestGetDateAtTurn(int gameTurn)
+		public void TestGetDateAtTurn(int gt)
 		{
-			GameTurn = gameTurn;
-			OpStage = 0;
+			int curGameTurn = GameTurn;
+			int curOpStage = OpStage;
+			gameTurn = gt;
+			opStage = 0;
 			Console.WriteLine(GameDate);
+			gameTurn = curGameTurn;
+			opStage = curOpStage;
 		}
 
 
