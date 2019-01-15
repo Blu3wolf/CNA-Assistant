@@ -35,4 +35,33 @@ namespace CNA_Assistant
 		public int Result { get; }
 
 	}
+
+	public class TwoDice
+	{
+		// for when you need to roll two dice
+
+		public TwoDice()
+		{
+			DiceRoll dice1 = new DiceRoll();
+			DiceRoll dice2 = new DiceRoll();
+
+			Sum = dice1.Result + dice2.Result;
+			LargeResults = 10 * dice1.Result + dice2.Result;
+		}
+
+		public TwoDice(int result1, int result2)
+		{
+			DiceRoll dice1 = new DiceRoll(result1);
+			DiceRoll dice2 = new DiceRoll(result2);
+
+			Sum = dice1.Result + dice2.Result;
+			LargeResults = 10 * dice1.Result + dice2.Result;
+		}
+
+		// Properties
+
+		public int Sum { get; }
+
+		public int LargeResults { get; }
+	}
 }
