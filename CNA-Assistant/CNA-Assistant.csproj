@@ -59,7 +59,7 @@
     <Compile Include="AirFacility.cs" />
     <Compile Include="DiceRoll.cs" />
     <Compile Include="IGameCommands.cs" />
-    <Compile Include="PlayerSide.cs" />
+    <Compile Include="Game.cs" />
     <Compile Include="Squadron.cs" />
     <Compile Include="SupplyDump.cs" />
     <Compile Include="SupplyPoint.cs" />

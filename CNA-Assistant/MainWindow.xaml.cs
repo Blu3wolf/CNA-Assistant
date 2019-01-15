@@ -24,7 +24,7 @@ namespace CNA_Assistant
         {
             InitializeComponent();
 
-			PlayerSide playerSide = new PlayerSide();
+			Game playerSide = new Game();
 
 			int turn = 1;
 			int stage = 1;

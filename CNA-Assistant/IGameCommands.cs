@@ -20,6 +20,8 @@ namespace CNA_Assistant
 
 		void DetermineInitiative(DiceRoll userThrow, DiceRoll enemyThrow); // Only makes sense if the current phase is DetermineInitiative. Passes DiceRolls to the model, and the model decides if the user has initiative or not.
 
+		void DetermineInitiative(bool HasInitiative); // user advises software whether they have intiative or not directly. 
+
 		// planning for implementing the Land and Logistics Games only at this point! Air Game will be added later. 
 
 		/* Naval Convoy Scheduling : CW player plans Replacement Point Production arrivals for next month, in the first phase of THIS month. i.e., Jun I, plan Aug I, II, III and IV. 
@@ -91,7 +93,9 @@ namespace CNA_Assistant
 
 		// movement segment
 
-		void Move(); // phasing user moves units according to Continual Movement rules. Non-phasing player may also move units for Reaction.
+		void Move(); // phasing user moves units according to Continual Movement rules.
+
+		void React(); // non phasing user may move some units per reaction rules
 
 		// Breakdown Determination segment
 
