@@ -53,23 +53,77 @@ namespace CNA_Assistant
 
 		void DetermineWeather(); // user with initiative rolls for weather. User without initiative could use this if they had the dice rolls too I guess. 
 
-		// Organisation Phase
+		// Organisation Phase - Segments undertaken in any order desired
 
-		// Naval Convoy Arrival Phase
+		void DistributeWater(); // user denotes a unit to consume water (from the same hex)
+
+		void Detach(); // when you detach a unit, you can reorganise the unit pretty freely. 
+
+		void Attach(); // attach only to unit in the same hex
+
+		void Assign(); // assign only to attached unit
+
+		void AttritLackOfWater(); // all units without water distributed already undergo attrition
+
+		void Construct(); // units start or continue construction projects
+
+		void PerformTraining(); // units start or continue training
+
+		void DistributeSupplies(); // Supplies in the same hex as land units may be redistributed, trucks loaded/unloaded, etc
+
+		void TacticalShipping(); // user performs tactical shipping, moving cargo between ports
+
+		// Naval Convoy Arrival Phase - reinforcements, replacements and supplies arrive at ports as scheduled. 
+
+		void PlanReplacements(); // user plans replacements to arrive in future turns
 
 		// Commonwealth Fleet Phase
 
-		// Reserve Designation Phase - this is the start of the PlayerA/PlayerB repetition.
+		void AssignFleet(); // CW player assigns ship to hexes for bombardment
 
-		// Movement and Combat Phase
+		void RepairFleet(); // CW player performs fleet repair
+
+		// Reserve Designation Phase - this is the start of the PlayerA/PlayerB repetition. No interaction unless user is phasing!
+
+		void AssignReserve(); // user assigns unit to Reserve status
+
+		// Movement and Combat Phase - 4 segments in order, repeated as long as phasing user desires.
+
+		// movement segment
+
+		void Move(); // phasing user moves units according to Continual Movement rules. Non-phasing player may also move units for Reaction.
+
+		// Breakdown Determination segment
+
+		// any decisions to make here?
+
+		// Combat Segment - so many decisions to make here!
+
+
+
+		// Reserve Release Segment
+
+		void ReleaseReserve(); // user releases reserves
+
+		void RestartMovementCombat(); // User decides to start a new movement and combat phase - happens automatically if they release reserves
 
 		// Truck Convoy Movement Phase
 
+		void Move(); // phasing user moves Truck Convoys, POWs and Guards
+
 		// Commonwealth Rail Movement Phase
+
+		void MoveSupplies(); // CW phasing user moves supplies along rail
 
 		// Repair Phase
 
+		void TowVehicle(); // phasing user tows brokendown and recovered vehicles
+
+		void RepairVehicle(); // phasing user attempts to repair a broken or destroyed vehicle (that was not towed this phase)
+
 		// Patrol Phase - this is the end of the repetition - after this, go either to next op stage, next turn, or playerB reserve designation phase.
+
+		void Patrol(); // phasing user performs Patrols if no combat occurred
 
 		// and that covers the decisions the user can make in the Land/Logistics Game.
 	}
