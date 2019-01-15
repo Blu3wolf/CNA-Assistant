@@ -10,11 +10,15 @@ namespace CNA_Assistant
 	{
 		/* The top level object that represents the entire Game model. A reference to the PlayerSide is the primary tool required by the ViewModel, to manipulate the game state.
 		 * All units the user has, the current game turn, all of it. Saving the game represents essentially writing the state of the PlayerSide to disc. Loading the game, creating
-		 * a new PlayerSide object with specified values from the save file. Selecting New Game means creating a new PlayerSide object, using pre-defined data (Scenario data). */
+		 * a new PlayerSide object with specified values from the save file. Selecting New Game means creating a new PlayerSide object, using pre-defined data (Scenario data). 
+		 * Some features of a PlayerSide should be immutable. For example, the user cannot decide they are now Axis if they were Commonwealth. These properties should be get only, 
+		 * and be set in the constructor. */
 
 		public PlayerSide() // Eventually, this should take a SaveFile object as an argument, that contains the values to populate the object with.
 		{
 			// Initialises all the properties of a PlayerSide object.
+
+			// Sets all immutable properties (Axis/CW).
 
 
 		}
@@ -26,6 +30,12 @@ namespace CNA_Assistant
 		private int opStage;
 
 		// Properties
+
+		public Side SideIs
+		{ get;  }
+
+		public enum Side
+		{ Axis, Commonwealth }
 
 		public int GameTurn // Game Turn one through to one hundred eleven. 
 		{

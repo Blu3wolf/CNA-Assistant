@@ -55,8 +55,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Aircraft.cs" />
+    <Compile Include="AirFacility.cs" />
     <Compile Include="DiceRoll.cs" />
+    <Compile Include="IGameCommands.cs" />
     <Compile Include="PlayerSide.cs" />
+    <Compile Include="Squadron.cs" />
     <Compile Include="SupplyDump.cs" />
     <Compile Include="SupplyPoint.cs" />
     <Compile Include="TOEStrengthPointType.cs" />
