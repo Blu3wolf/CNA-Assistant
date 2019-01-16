@@ -34,7 +34,7 @@ namespace CNA_Assistant
 
 		// The axis player assigns shipping within that shipping limit. They divide the shipping limit into convoys as they like, selecting the contents of that convoy from unlimited Stores, Fuel, and Ammunition.
 
-		void AxisDefineConvoy(/* this should definitely be an enum */ int shippingLaneID, int arrivingOpsStage, int ammo, int fuel, int stores, int[] trucks, Unit[] replacements); // trucks[] is an array containing numbers of light, medium and heavy trucks on board. replacements[] is more or less a placeholder for a list of replacement points of many different types.
+		void AxisDefineConvoy(ShippingLanes shippingLanes, int arrivingOpsStage, int ammo, int fuel, int stores, int[] trucks, Unit[] replacements); // trucks[] is an array containing numbers of light, medium and heavy trucks on board. replacements[] is more or less a placeholder for a list of replacement points of many different types.
 
 		// Stores expenditure stage - this one only requires decisions for hexes with insufficient stores. Everywhere else can be done automatically, I guess - but optionally a player decision could be allowed to make half-rations an option?
 		// in that case, the only interaction/decision needs to be one to assign units to half-rations or full rations status, and a way to assign units to get to eat, if there is insufficient food to go around.
@@ -103,7 +103,7 @@ namespace CNA_Assistant
 
 		// Combat Segment - so many decisions to make here!
 
-
+		
 
 		// Reserve Release Segment
 
