@@ -66,6 +66,7 @@
     <Compile Include="TOEStrengthPointType.cs" />
     <Compile Include="TurnState.cs" />
     <Compile Include="Unit.cs" />
+    <Compile Include="UnitCharacteristics.cs" />
     <Compile Include="UnitType.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

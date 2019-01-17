@@ -8,78 +8,88 @@ namespace CNA_Assistant
 {
     class Unit
     {
-        public int ID;
+		public Unit()
+		{
+
+		}
+
+		public UnitCharacteristics UnitCharacteristics;
 
 		public int Location;
-
-        public int CharacteristicsCode;
 
         public string ShortDesignation;
 
         public string Designation;
 
-        public int CapabilityPointAllowance;
-
         public int StackingPoints;
 
-        public UnitType UnitType;
+		private int capabilityPointsAllowance;
 
-        public IDictionary<TOEStrengthPointType, int> TOEStrengthPoints;
+		private int capabilityPointsExpended;
 
-        public int BarrageRating;
+		private int cohesionLevel;
 
-        public int VulnerabilityRating;
+		public int CapabilityPointsExpended
+		{
+			get => capabilityPointsExpended;
+			set
+			{
+				capabilityPointsExpended = value;
+				if (capabilityPointsExpended > capabilityPointsAllowance)
+				{
+					int diff = capabilityPointsExpended - capabilityPointsAllowance;
+					cohesionLevel -= diff;
+				}
+			}
+		}
+		public int CapabilityPointsAllowance { get => capabilityPointsAllowance; }
+		public int CohesionLevel { get => cohesionLevel; set => cohesionLevel = value; }
 
-        public int AntiArmorRating;
+		// methods
 
-        public int ArmorProtectionRating;
+		public void MoveTo(int location, int cpa) // should only happen for Movement (and Reaction), and Retreat Before Assault. 
+		{
+			if (cohesionLevel > -26)
+			{
+				Location = location;
+				CapabilityPointsExpended += cpa;
+			}
+			
 
-        public int OffensiveCloseAssaultRating;
+		}
 
-        public int DefensiveCloseAssaultRating;
+		public void Surrender()
+		{
+			// really just need to delete the unit - perhaps return information about what TOE points it contained.
 
-        public int AntiAircraftRating;
+			// This probably is going to call a method of Game, say Game.Surrender(Unit unit) which would remove this Unit from the list of Units the user owns. So Game.Surrender(this) basically.
+		}
 
-        public int MaxTOEStrengthRating;
+		public void Victory()
+		{
+			cohesionLevel += 3;
+		}
 
-        public int BasicMoraleRating;
+		private void Rest() // recover 5 cohesion if negative and you didnt work this turn - and not undergoing training!
+		{
+			if (capabilityPointsExpended == 0)
+			{
+				if (cohesionLevel < 0)
+				{
+					cohesionLevel += 5;
+					if (cohesionLevel > 0)
+					{
+						cohesionLevel = 0;
+					}
+				}
+			}
+		}
 
-        public int CurrentMoraleRating;
+		internal void EndTurn()
+		{
+			Rest();
 
-        public int CapabilityPointsExpended;
-
-        public int CohesionLevel;
-
-        public int ActualBarragePoints;
-
-        public int ActualOffensiveCloseAssaultPoints;
-
-        public int ActualDefensiveCloseAssaultPoints;
-
-        public int FuelReserves;
-
-        public int AmmoReserves;
-
-        public int BreakdownPoints;
-
-        public bool IsAssigned;
-
-        public Unit AssignedToParent;
-
-        public bool IsAttached;
-
-        public Unit AttachedToParent;
-
-        public bool HasAssignedUnits;
-
-        public IList<Unit> AssignedUnits;
-
-        public bool HasAttachedUnits;
-
-        public IList<Unit> AttachedUnits;
-
-        public string Notes;
-
-
+			capabilityPointsExpended = 0; 
+		}
     }
 }
