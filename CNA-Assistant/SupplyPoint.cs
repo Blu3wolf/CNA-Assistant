@@ -10,6 +10,25 @@ namespace CNA_Assistant
 	{
 		public int CapabilityPointAllowance;
 
-		public int CapabilityPointsExpended;
+		private int capabilityPointsExpended;
+
+		public SupplyType Type;
+
+		public int CapabilityPointsExpended { get => capabilityPointsExpended; }
+
+		internal void EndTurn()
+		{
+			capabilityPointsExpended = 0;
+		}
+
+		internal void ExpendCapabilityPoints(int cp)
+		{
+			capabilityPointsExpended -= cp;
+		}
+	}
+
+	enum SupplyType
+	{
+		Ammo, Fuel, Water, Stores
 	}
 }
