@@ -13,49 +13,83 @@ namespace CNA_Assistant
 
 		}
 
-		public UnitCharacteristics UnitCharacteristics;
+		public UnitCharacteristics UnitCharacteristics { get; }
 
-		public int Location;
+		public int Location { get; private set; }
 
-        public string ShortDesignation;
+        public string ShortDesignation { get; }
 
-        public string Designation;
+        public string Designation { get; }
 
         public int StackingPoints;
 
-		private int capabilityPointsAllowance;
-
-		private int capabilityPointsExpended;
-
-		private int cohesionLevel;
-
-		public int CapabilityPointsExpended
+		public int CapabilityPointsExpended	{ get; private set;	}
+		public int CapabilityPointsAllowance
 		{
-			get => capabilityPointsExpended;
-			set
+			get
 			{
-				capabilityPointsExpended = value;
-				if (capabilityPointsExpended > capabilityPointsAllowance)
+				// CPA is either: CPA of its UnitCharacteristics; CPA of its attached TOE Gun or Tank points (if lower, and only if UnitCharacteristics does not force its CPA); 
+				// or CPA of an attached unit (if that is lower); or CPA of the Trucks the unit is riding in (if Inf., and Motorised). 
+
+				int CPA = UnitCharacteristics.CapabilityPointAllowance;
+
+				if (UnitCharacteristics.TOESlowsUnit)
 				{
-					int diff = capabilityPointsExpended - capabilityPointsAllowance;
-					cohesionLevel -= diff;
+					if (true) // if attached TOE Strength Points (Gun or Tank) have lower CPA
+					{
+						// then CPA = attached TOE Strength Point lowest CPA
+					}
 				}
+
+				if (true) // if attached unit has lower CPA
+				{
+					// then CPA = that attached units lower CPA
+				}
+
+				return CPA;
 			}
 		}
-		public int CapabilityPointsAllowance { get => capabilityPointsAllowance; }
-		public int CohesionLevel { get => cohesionLevel; set => cohesionLevel = value; }
+		public int CohesionLevel { get; private set; }
 
 		// methods
 
+		public bool CanMove() // or attack, or defend...
+		{
+			if (CohesionLevel > -26) // check if in valid movement phase? Movement (and Reaction), and Retreat Before Assault. 
+			{
+				return true;
+			}
+			return false;
+		}
+
 		public void MoveTo(int location, int cpa) // should only happen for Movement (and Reaction), and Retreat Before Assault. 
 		{
-			if (cohesionLevel > -26)
+			if (CanMove())
 			{
 				Location = location;
 				CapabilityPointsExpended += cpa;
 			}
 			
 
+		}
+
+		abstract public bool AttachTo(); // attach to the specified unit
+
+		public void ExpendCapabilityPoints(int points)
+		{
+			CapabilityPointsExpended += points;
+			if (CapabilityPointsExpended > CapabilityPointsAllowance)
+			{
+				int diff = CapabilityPointsExpended - CapabilityPointsAllowance;
+				if (diff >= points)
+				{
+					CohesionLevel -= points;
+				}
+				else
+				{
+					CohesionLevel -= diff;
+				}
+			}
 		}
 
 		public void Surrender()
@@ -65,31 +99,36 @@ namespace CNA_Assistant
 			// This probably is going to call a method of Game, say Game.Surrender(Unit unit) which would remove this Unit from the list of Units the user owns. So Game.Surrender(this) basically.
 		}
 
-		public void Victory()
+		public void Victory() // called when enemy is pushed out of hex due to combat (not due to reaction, retreat before assault, etc).
 		{
-			cohesionLevel += 3;
+			CohesionLevel += 3;
 		}
 
-		private void Rest() // recover 5 cohesion if negative and you didnt work this turn - and not undergoing training!
+		internal void Defeat() // called internally by assault class. If unit takes 30% losses from that assault, or if the unit is forced to retreat due to not assigning any points to defend against an assault.
 		{
-			if (capabilityPointsExpended == 0)
+			CohesionLevel -= 3;
+		}
+
+		private void Rest() // recover up to 5 cohesion if negative and you didnt work this turn - and not undergoing training!
+		{
+			if (CapabilityPointsExpended == 0)
 			{
-				if (cohesionLevel < 0)
+				if (CohesionLevel < 0)
 				{
-					cohesionLevel += 5;
-					if (cohesionLevel > 0)
+					CohesionLevel += 5;
+					if (CohesionLevel > 0)
 					{
-						cohesionLevel = 0;
+						CohesionLevel = 0;
 					}
 				}
 			}
 		}
 
-		internal void EndTurn()
+		internal void EndTurn() // called by Game, I guess. At end of turn. 
 		{
 			Rest();
 
-			capabilityPointsExpended = 0; 
+			CapabilityPointsExpended = 0; 
 		}
     }
 }
