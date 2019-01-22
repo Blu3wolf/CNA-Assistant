@@ -21,7 +21,7 @@ namespace CNA_Assistant
 
         public string Designation { get; }
 
-        public int StackingPoints;
+        public int StackingPoints; // this sorta depends on the Size of the unit. Div, Bde, Btn, Coy... etc. Whether its a shell or not...
 
 		public int CapabilityPointsExpended	{ get; private set;	}
 		public int CapabilityPointsAllowance
@@ -33,6 +33,11 @@ namespace CNA_Assistant
 
 				int CPA = UnitCharacteristics.CapabilityPointAllowance;
 
+				if (true) // all infantry TOE points are motorized by Trucks
+				{
+					// then CPA = attached Truck's lowest CPA (possibly higher than base Unit Characteristic CPA)
+				}
+
 				if (UnitCharacteristics.TOESlowsUnit)
 				{
 					if (true) // if attached TOE Strength Points (Gun or Tank) have lower CPA
@@ -41,15 +46,22 @@ namespace CNA_Assistant
 					}
 				}
 
-				if (true) // if attached unit has lower CPA
+				if (true) // if attached child Unit has lower CPA
 				{
 					// then CPA = that attached units lower CPA
+				}
+
+				if (true) // if attached Trucks have lower CPA
+				{
+					// then CPA = that attached Truck's lower CPA
 				}
 
 				return CPA;
 			}
 		}
 		public int CohesionLevel { get; private set; }
+
+		public int BreakdownPoints { get; private set; }
 
 		// methods
 
@@ -69,9 +81,16 @@ namespace CNA_Assistant
 				Location = location;
 				CapabilityPointsExpended += cpa;
 			}
-			
+
+			CheckBreakdown();
+		}
+
+		public void CheckBreakdown() // happens after movement I guess. Requires player input to resolve, though.
+		{
 
 		}
+
+
 
 		abstract public bool AttachTo(); // attach to the specified unit
 
@@ -124,11 +143,13 @@ namespace CNA_Assistant
 			}
 		}
 
-		internal void EndTurn() // called by Game, I guess. At end of turn. 
+		internal void EndOpsStage() // Should happen in response to an event at end of operations stage (both sides).
 		{
 			Rest();
 
-			CapabilityPointsExpended = 0; 
+			CapabilityPointsExpended = 0;
+
+			BreakdownPoints = 0;
 		}
     }
 }
