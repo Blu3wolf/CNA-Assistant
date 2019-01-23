@@ -69,6 +69,7 @@
     <Compile Include="Unit.cs" />
     <Compile Include="UnitCharacteristics.cs" />
     <Compile Include="UnitType.cs" />
+    <Compile Include="ICapabilityPoints.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

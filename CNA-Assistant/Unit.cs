@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace CNA_Assistant
 {
-    class Unit
-    {
+	abstract class Unit : ICapabilityPoints
+	{
 		public Unit()
 		{
 
@@ -92,7 +92,25 @@ namespace CNA_Assistant
 
 
 
-		abstract public bool AttachTo(); // attach to the specified unit
+		public void AttachTo(Unit unit) 
+		{
+			if (unit.CanAttach(this))
+			{
+				// then attach this unit to the specified unit
+
+				
+			}
+		}
+
+		public bool CanAttach(Unit unit) // returns true if able to attach the specified unit to this unit
+		{
+			// This is a complicated chapter. 
+
+			/* So you can attach a unit if there is space in the formation organisation chart, or if there is not space in the org chart, then if there is space in the max attachment chart.
+			 * The problem there is that there are lots and lots of different formation org charts for different types of units. So its not going to be that simple a function to figure out
+			 * whether or not a given unit can be attached. 
+			 */
+		}
 
 		public void ExpendCapabilityPoints(int points)
 		{
