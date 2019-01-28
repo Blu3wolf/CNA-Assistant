@@ -8,22 +8,18 @@ namespace CNA_Assistant
 {
 	abstract class Unit : ICapabilityPoints
 	{
-		public Unit()
-		{
-
-		}
-
 		public UnitCharacteristics UnitCharacteristics { get; }
 
 		public int Location { get; private set; }
 
-        public string ShortDesignation { get; }
+		public string ShortDesignation { get; }
 
-        public string Designation { get; }
+		public string Designation { get; }
 
-        public int StackingPoints; // this sorta depends on the Size of the unit. Div, Bde, Btn, Coy... etc. Whether its a shell or not...
+		public bool IsShell { get; }
 
-		public int CapabilityPointsExpended	{ get; private set;	}
+		public int CapabilityPointsExpended { get; private set; }
+
 		public int CapabilityPointsAllowance
 		{
 			get
@@ -63,9 +59,25 @@ namespace CNA_Assistant
 
 		public int BreakdownPoints { get; private set; }
 
-		// methods
+		public int StackingPoints {	get; }
 
-		public bool CanMove() // or attack, or defend...
+		public Unit AttachedTo { get; private set; }
+
+		public List<Unit> AssignedUnits { get; private set; }
+
+		public List<Unit> AttachedUnits { get; private set; }
+
+		public int Stores { get; private set; }
+
+		public int Ammo { get; private set; }
+
+		public int Fuel { get; private set; }
+
+		public int Water { get; private set; }
+
+	// methods
+
+	public bool CanMove() // or attack, or defend...
 		{
 			if (CohesionLevel > -26) // check if in valid movement phase? Movement (and Reaction), and Retreat Before Assault. 
 			{
@@ -127,13 +139,6 @@ namespace CNA_Assistant
 					CohesionLevel -= diff;
 				}
 			}
-		}
-
-		public void Surrender()
-		{
-			// really just need to delete the unit - perhaps return information about what TOE points it contained.
-
-			// This probably is going to call a method of Game, say Game.Surrender(Unit unit) which would remove this Unit from the list of Units the user owns. So Game.Surrender(this) basically.
 		}
 
 		public void Victory() // called when enemy is pushed out of hex due to combat (not due to reaction, retreat before assault, etc).
