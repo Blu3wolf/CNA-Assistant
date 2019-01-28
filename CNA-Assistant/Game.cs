@@ -109,6 +109,10 @@ namespace CNA_Assistant
 			Spring, Summer, Autumn, Winter
 		}
 
+		public List<Unit> Units { get; private set; }
+
+		public List<SupplyDump> SupplyDumps { get; private set; }
+
 		// Methods
 
 		public void NextPhase()
@@ -213,6 +217,25 @@ namespace CNA_Assistant
 			}
 
 			return supply;
+		}
+
+		public enum Evaporation
+		{
+			Flimsies, Jerrycans, HotWeather
+		}
+
+		private void Evaporate(Evaporation evaporation) 
+		{
+			foreach (Unit unit in Units)
+			{
+				unit.Evaporate(evaporation);
+			}
+
+			// all Fuel and Water sources that have limits also have evaporation. Cairo has no evaporation (unlimited supplies). Cities have no water evaporation (unlimited water). 
+			foreach (SupplyDump dump in SupplyDumps)
+			{
+				dump.Evaporate(evaporation);
+			}
 		}
 
 		public void TestSkipToNextGameTurn()

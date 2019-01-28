@@ -102,29 +102,12 @@ namespace CNA_Assistant
 
 		}
 
-
-
-		public void AttachTo(Unit unit) 
+		public void Assign() // assigns this unit to the unit it is attached to, if able
 		{
-			if (unit.CanAttach(this))
-			{
-				// then attach this unit to the specified unit
 
-				
-			}
 		}
 
-		public bool CanAttach(Unit unit) // returns true if able to attach the specified unit to this unit
-		{
-			// This is a complicated chapter. 
-
-			/* So you can attach a unit if there is space in the formation organisation chart, or if there is not space in the org chart, then if there is space in the max attachment chart.
-			 * The problem there is that there are lots and lots of different formation org charts for different types of units. So its not going to be that simple a function to figure out
-			 * whether or not a given unit can be attached. 
-			 */
-		}
-
-		public void ExpendCapabilityPoints(int points)
+		private void ExpendCapabilityPoints(int points)
 		{
 			CapabilityPointsExpended += points;
 			if (CapabilityPointsExpended > CapabilityPointsAllowance)
@@ -174,5 +157,111 @@ namespace CNA_Assistant
 
 			BreakdownPoints = 0;
 		}
-    }
+
+		public bool CanAttach(Unit unit) // returns true if able to attach the specified unit to this unit
+		{
+			// This is a complicated chapter. 
+
+			/* So you can attach a unit if there is space in the formation organisation chart, or if there is not space in the org chart, then if there is space in the max attachment chart.
+			 * The problem there is that there are lots and lots of different formation org charts for different types of units. So its not going to be that simple a function to figure out
+			 * whether or not a given unit can be attached. 
+			 * 
+			 * The immediate solution is to only track whether or not a unit can be attached over and above existing assignments - 
+			 * i.e., assume for now that units being attached to have already got a full org chart
+			 * and could not therefore accept any further assignments.
+			 * 
+			 * For now, just return true - implement later.
+			 */
+
+			return true;
+		}
+
+		public void Attach(Unit unit)
+		{
+			if (CanAttach(unit))
+			{
+				AttachedUnits.Add(unit);
+
+				if (AssignedUnits.Contains(unit)) // then both units expend 1 CP
+				{
+
+				}
+				else // both units expend 2 CP, and it must currently be a Reorganisation segment
+				{
+
+				}
+			}
+		}
+
+		public void Detach(Unit unit)
+		{
+			if (IsAttached(unit))
+			{
+				AttachedUnits.Remove(unit);
+
+				if (AssignedUnits.Contains(unit)) // then both units expend 1 CP
+				{
+
+				}
+				else // both units expend 2 CP, and it must currently be a Reorganisation segment or movement segment
+				{
+
+				}
+			}
+		}
+
+		public bool IsAttached(Unit unit)
+		{
+			if (AttachedUnits.Contains(unit))
+			{
+				return true;
+			}
+			return false;
+		}
+
+		public void Assign(Unit unit)
+		{
+			throw new NotImplementedException();
+		}
+
+		public bool IsAssignable(Unit unit)
+		{
+			throw new NotImplementedException();
+		}
+
+		internal void Evaporate(Game.Evaporation evaporation)
+		{
+			int fuelEvaporate = Fuel;
+			int waterEvaporate = Water;
+
+			switch (evaporation)
+			{
+				case Game.Evaporation.Flimsies:
+					{
+						fuelEvaporate *= 9;
+						waterEvaporate *= 9;
+					}
+					break;
+				case Game.Evaporation.Jerrycans:
+					{
+						fuelEvaporate *= 6;
+						waterEvaporate *= 6;
+					}
+					break;
+				case Game.Evaporation.HotWeather:
+					{
+						fuelEvaporate *= 5;
+						waterEvaporate *= 5;
+					}
+					break;
+				default: throw new ArgumentException("evaporation case not handled in Unit.Evaporate()");
+			}
+
+			fuelEvaporate /= 100;
+			waterEvaporate /= 100;
+
+			Fuel -= fuelEvaporate;
+			Water -= waterEvaporate;
+		}
+	}
 }
