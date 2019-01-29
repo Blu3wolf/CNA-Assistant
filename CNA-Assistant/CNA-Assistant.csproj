@@ -65,6 +65,7 @@
     <Compile Include="SupplyPoint.cs" />
     <Compile Include="TOEStrengthPointType.cs" />
     <Compile Include="Truck.cs" />
+    <Compile Include="TruckConvoy.cs" />
     <Compile Include="TurnState.cs" />
     <Compile Include="Unit.cs" />
     <Compile Include="UnitCharacteristics.cs" />

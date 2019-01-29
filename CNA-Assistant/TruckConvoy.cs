@@ -6,10 +6,7 @@ using System.Threading.Tasks;
 
 namespace CNA_Assistant
 {
-	public interface ICapabilityPoints
+	class TruckConvoy : Unit
 	{
-		int CapabilityPointsAllowance { get; }
-
-		int CapabilityPointsExpended { get; }
 	}
 }

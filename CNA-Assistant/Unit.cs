@@ -14,7 +14,11 @@ namespace CNA_Assistant
 
 		abstract public int CapabilityPointsAllowance { get; }
 
+		abstract public bool IsMotorised { get; }
+
 		public int BreakdownPoints { get; protected set; }
+
+		public int LightTruckBreakdownPoints { get; protected set; }
 
 		public int Stores { get; private set; }
 
@@ -24,11 +28,17 @@ namespace CNA_Assistant
 
 		public int Water { get; private set; }
 
+		public int LightTrucks { get; private set; }
+
+		public int MediumTrucks { get; private set; }
+
+		public int HeavyTrucks { get; private set; }
+
 		// methods
 
 		abstract public bool CanMove(); // depends whether the Unit is a TruckConvoy or a CombatUnit (or a Collection of ReplacementPoints?)
 
-		public void MoveTo(int location, int cpa) // would be great if we could pass in a Stack<Hex>, and from that determine CapabilityPoints and BreakdownPoints dynamically.
+		public void MoveTo(int location, int cpa, int breakdownpts, int lightbreakdownpts) // would be great if we could pass in a Stack<Hex>, and from that determine CapabilityPoints and BreakdownPoints dynamically.
 		{
 			if (CanMove())
 			{
@@ -36,12 +46,17 @@ namespace CNA_Assistant
 				CapabilityPointsExpended += cpa;
 			}
 
-			CheckBreakdown();
+			CheckBreakdown(breakdownpts); // easy to do except not for Light Trucks, which need to track their own set of Breakdown Points (different from every other vehicle because why not). 
 		}
 
-		public void CheckBreakdown() // happens after movement I guess. Requires player input to resolve, though.
+		protected void CheckLightBreakdown()
 		{
 
+		}
+
+		protected void CheckBreakdown(int breakdownpts) // happens after movement I guess. Requires player input to resolve, though.
+		{
+			// checks every attached truck and every Tank TOE point for breakdown. Not all units have TOE points though...
 		}
 
 		internal void EndOpsStage() // Should happen in response to an event at end of operations stage.
