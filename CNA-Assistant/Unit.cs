@@ -92,21 +92,54 @@ namespace CNA_Assistant
 						// each vehicle TOE point has 1 Water in the radiator - but not all units have TOE points. 
 						// each Truck point has 1 water in the radiator
 
-						fuelEvaporate -= fuelintanks;
-						waterEvaporate -= waterinradiators;
+						// add new method to return fuel currently in tanks - well, that requires that trucks are objects
+						// so instead just assume trucks fuel tanks are always full, and fix it later
 
-						fuelEvaporate *= 5;
-						waterEvaporate *= 5;
+						// so for fuel the method needs to return total number of truck points
+						if (Fuel > FuelInTanks())
+						{
+							fuelEvaporate -= FuelInTanks();
+							fuelEvaporate *= 5;
+						}
+						else
+						{
+							fuelEvaporate = 0;
+						}
+
+						if (Water > WaterInRadiators())
+						{
+							waterEvaporate -= WaterInRadiators();
+							waterEvaporate *= 5;
+						}
+						else
+						{
+							waterEvaporate = 0;
+						}
 					}
 					break;
 				default: throw new ArgumentException("evaporation case not handled in Unit.Evaporate()");
 			}
 
-			fuelEvaporate /= 100;
-			waterEvaporate /= 100;
+			if (fuelEvaporate > 0)
+			{
+				fuelEvaporate /= 100;
+				Fuel -= fuelEvaporate;
+			}
+			if (waterEvaporate > 0)
+			{
+				waterEvaporate /= 100;
+				Water -= waterEvaporate;
+			}
+		}
 
-			Fuel -= fuelEvaporate;
-			Water -= waterEvaporate;
+		protected int WaterInRadiators() // combat units will override
+		{
+			return LightTrucks + MediumTrucks + HeavyTrucks;
+		}
+
+		protected int FuelInTanks() // combat units will override
+		{
+			return 8 * LightTrucks + 6 * (MediumTrucks + HeavyTrucks);
 		}
 	}
 }
