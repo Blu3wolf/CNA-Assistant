@@ -58,6 +58,7 @@
     <Compile Include="Aircraft.cs" />
     <Compile Include="AirFacility.cs" />
     <Compile Include="DiceRoll.cs" />
+    <Compile Include="Hex.cs" />
     <Compile Include="IGameCommands.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="Squadron.cs" />
