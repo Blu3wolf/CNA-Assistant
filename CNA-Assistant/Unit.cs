@@ -8,7 +8,7 @@ namespace CNA_Assistant
 {
 	abstract class Unit : ICapabilityPoints
 	{
-		public int Location { get; private set; }
+		public Hex Location { get; private set; }
 
 		public int CapabilityPointsExpended { get; protected set; }
 
@@ -47,6 +47,28 @@ namespace CNA_Assistant
 			}
 
 			CheckBreakdown(breakdownpts); // easy to do except not for Light Trucks, which need to track their own set of Breakdown Points (different from every other vehicle because why not). 
+		}
+
+		public void MoveVia(Stack<Hex> path) 
+		{
+			Hex location = Location;
+			int cpa = 0;
+			int breakdown = 0;
+			while (path.Count > 0)
+			{
+				Hex desthex = path.Pop();
+				foreach (Hex.SideTerrainType hexside in location.SideTerrain(desthex))
+				{
+					// count cp and bps to cross
+				}
+				// count cp and bps for hex terrain
+				Hex.TerrainType hexterrain = desthex.Terrain;
+
+				location = desthex;
+			}
+
+			// now read cps, bps and call MoveTo();
+
 		}
 
 		protected void CheckLightBreakdown()
