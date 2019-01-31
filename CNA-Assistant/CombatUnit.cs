@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,6 +21,8 @@ namespace CNA_Assistant
 
 		public bool IsShell { get; }
 
+		public override bool IsMotorised { get; }
+
 		public Unit AttachedTo { get; private set; }
 
 		public List<Unit> AssignedUnits { get; private set; }
@@ -37,16 +40,20 @@ namespace CNA_Assistant
 
 				int CPA = UnitCharacteristics.CapabilityPointAllowance;
 
-				if (true) // all infantry TOE points are motorized by Trucks
+				if (IsMotorised) // all infantry TOE points are motorized by Trucks
 				{
 					// then CPA = attached Truck's lowest CPA (possibly higher than base Unit Characteristic CPA)
+					// at most this is 25 (light trucks carrying infantry)
+					CPA = 25;
 				}
-
-				if (UnitCharacteristics.TOESlowsUnit)
+				else if (UnitCharacteristics.TOESlowsUnit)
 				{
-					if (true) // if attached TOE Strength Points (Gun or Tank) have lower CPA
+					foreach (TOEStrengthPoint point in TOEStrengthPoints)
 					{
-						// then CPA = attached TOE Strength Point lowest CPA
+						if (point.CapabilityPointAllowance < CPA)
+						{
+							CPA = point.CapabilityPointAllowance;
+						}
 					}
 				}
 
@@ -58,9 +65,22 @@ namespace CNA_Assistant
 				if (true) // if attached Trucks have lower CPA
 				{
 					// then CPA = that attached Truck's lower CPA
+					// trucks CPA depends on its cargo - highest for light trucks carrying inf, less for medium and heavy trucks, less if motorising guns
 				}
 
 				return CPA;
+			}
+		}
+
+		public int InfantryTOE { get; private set; } //  number of Infantry TOE Strength Points attached to the unit
+
+		private List<TOEStrengthPoint> strengthPoints;
+
+		public ReadOnlyCollection<TOEStrengthPoint> TOEStrengthPoints
+		{
+			get
+			{
+				return strengthPoints.AsReadOnly();
 			}
 		}
 

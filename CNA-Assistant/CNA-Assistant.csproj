@@ -57,12 +57,15 @@
     </ApplicationDefinition>
     <Compile Include="Aircraft.cs" />
     <Compile Include="AirFacility.cs" />
+    <Compile Include="CombatStats.cs" />
+    <Compile Include="CombatUnit.cs" />
     <Compile Include="DiceRoll.cs" />
     <Compile Include="IGameCommands.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="Squadron.cs" />
     <Compile Include="SupplyDump.cs" />
     <Compile Include="SupplyPoint.cs" />
+    <Compile Include="TOEStrengthPoint.cs" />
     <Compile Include="TOEStrengthPointType.cs" />
     <Compile Include="Truck.cs" />
     <Compile Include="TruckConvoy.cs" />
