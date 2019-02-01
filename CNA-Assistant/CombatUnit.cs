@@ -21,7 +21,26 @@ namespace CNA_Assistant
 
 		public bool IsShell { get; }
 
+		public bool IsArmor
+		{
+			get
+			{
+				foreach (TOEStrengthPoint toe in TOEStrengthPoints)
+				{
+					if (toe.Vulnerability == 0)
+					{
+						return true;
+					}
+				}
+				return false;
+			}
+		}
+
 		public override bool IsMotorised { get; }
+
+		public bool IsPinned { get; private set; }
+
+		public List<BarrageEffects> BarrageEffects { get; }
 
 		public Unit AttachedTo { get; private set; }
 
@@ -84,6 +103,8 @@ namespace CNA_Assistant
 			}
 		}
 
+		public bool OutstandingDecisions { get => throw new NotImplementedException(); } // returns true if the Unit requires decisions to be made before moving onto next step, for instance barrage outstanding
+
 		// methods
 
 		override public bool CanMove() // or attack, or defend...
@@ -126,6 +147,67 @@ namespace CNA_Assistant
 		{
 
 		}
+
+		public void Barrage(int TOEpts) // unit barraged, takes TOEpts damage. Resolved at end of barrage step. 
+		{
+			BarrageEffects.Add(new BarrageEffects(TOEpts));
+		}
+
+		public int BarrageOutstandingTOEs()
+		{
+			int togo = 0;
+			foreach (BarrageEffects effect in BarrageEffects)
+			{
+				togo += effect.TOEDestroyed;
+			}
+			return togo;
+		}
+
+		public void ResolveBarrage() // attempt to automatically resolve the barrage effects
+		{
+			// only works if there is only one type of TOE strength point in the unit, OR if there are more TOE strength points destroyed than the unit has remaining. 
+
+		}
+
+		public void ResolveBarrage(TOEStrengthPoint strengthPoint) // destroy the given (tank or gun) strengthPoint to resolve barrage effects
+		{
+			
+			if (TOEStrengthPoints.Contains(strengthPoint) && BarrageOutstandingTOEs() > 0)
+			{
+				strengthPoints.Remove(strengthPoint);
+				IsPinned = true;
+
+				BarrageEffects first = BarrageEffects.First();
+				BarrageEffects.Remove(first);
+				if (first.TOEDestroyed > 1)
+				{
+					BarrageEffects.Add(new BarrageEffects(first.TOEDestroyed - 1));
+				}
+			}
+		}
+
+		public void ResolveBarrage(int infantrypts) // destroy the given number of infantry TOE pts to resolve barrage effects
+		{
+
+			if (InfantryTOE > 0 && BarrageOutstandingTOEs() >= infantrypts)
+			{
+				InfantryTOE -= infantrypts;
+			}
+			IsPinned = true;
+
+			int removed = 0;
+			while (removed < infantrypts)
+			{
+				BarrageEffects first = BarrageEffects.First();
+				BarrageEffects.Remove(first);
+				removed += first.TOEDestroyed;
+			}
+			if (removed > infantrypts)
+			{
+				BarrageEffects.Add(new BarrageEffects(removed - infantrypts));
+			}
+		}
+
 
 		public void Victory() // called when enemy is pushed out of hex due to combat (not due to reaction, retreat before assault, etc).
 		{
