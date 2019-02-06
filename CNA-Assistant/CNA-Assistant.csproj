@@ -57,7 +57,10 @@
     </ApplicationDefinition>
     <Compile Include="Aircraft.cs" />
     <Compile Include="AirFacility.cs" />
+    <Compile Include="Barrage.cs" />
     <Compile Include="BarrageEffects.cs" />
+    <Compile Include="BarrageStep.cs" />
+    <Compile Include="BarrageTarget.cs" />
     <Compile Include="CombatStats.cs" />
     <Compile Include="CombatUnit.cs" />
     <Compile Include="DiceRoll.cs" />
