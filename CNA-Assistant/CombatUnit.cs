@@ -36,6 +36,25 @@ namespace CNA_Assistant
 			}
 		}
 
+		public bool HasBarrageRating
+		{
+			get
+			{
+				if (UnitCharacteristics.BarrageRating != 0)
+				{
+					return true;
+				}
+				foreach (TOEStrengthPoint toe in TOEStrengthPoints)
+				{
+					if (toe.BarrageRating != 0)
+					{
+						return true;
+					}
+				}
+				return false;
+			}
+		}
+
 		public override bool IsMotorised { get; }
 
 		public bool IsPinned { get; private set; }

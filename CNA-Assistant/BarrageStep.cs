@@ -12,6 +12,15 @@ namespace CNA_Assistant
 
 		public List<CombatUnit> UnitsInContact;
 
-		public List<BarrageEffects> 
+		public List<BarrageTarget> BarrageTargets;
+		
+		// methods
+
+		public void NewBarrageTarget()
+		{
+
+		}
+
+
 	}
 }
