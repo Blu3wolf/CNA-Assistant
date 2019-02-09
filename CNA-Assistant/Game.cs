@@ -54,13 +54,11 @@ namespace CNA_Assistant
 
 		public TurnState TurnState { get; internal set; } // current phase or step of the Sequence of Play - where in the turn we are up to, in other words. 
 
-		public bool HasInitiative
-		{
-			get
-			{
-				return userHasInitiative;
-			}
-		}
+		public bool HasInitiative { get; internal set; }
+
+		public bool GoesFirst { get; internal set; } // set at start of ops stage. Sounds like I want an ops stage object!
+
+		public bool IsPhasing { get; internal set; }
 
 		public DateTime GameDate // Finds the approximate date of the current GameTurn / OpStage combination and returns it.
 		{
@@ -117,7 +115,7 @@ namespace CNA_Assistant
 
 		public void NextPhase()
 		{
-			// increment phase number? define an enum, use that, case statement to advance? either way thats messy. 
+			// call Game.TurnState.Next();
 		}
 
 		public int GetInitiativeRating(Side side)

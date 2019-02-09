@@ -6,22 +6,22 @@ using System.Threading.Tasks;
 
 namespace CNA_Assistant
 {
-	class WeatherDeterminationPhase : TurnState
+	class BreakdownDeterminationSegment : TurnState
 	{
-		internal WeatherDeterminationPhase(Game game) : base(game)
+		internal BreakdownDeterminationSegment(Game game) : base(game)
 		{
 
 		}
 
 		protected override void Entry()
 		{
-			// generate decision to roll for weather
+			// determine breakdown results based on unit movement
 			throw new NotImplementedException();
 		}
 
 		internal override void Execute(Command command)
 		{
-			// handle valid commands to determine weather, possibly add further decisions based on results of those commands
+			// handle commands to resolve breakdowns
 			throw new NotImplementedException();
 		}
 
@@ -29,7 +29,7 @@ namespace CNA_Assistant
 		{
 			if (Decisions.Count() == 0)
 			{
-				game.TurnState = new OrganisationPhase(game);
+				game.TurnState = new PositionDeterminationSegment(game);
 			}
 		}
 	}

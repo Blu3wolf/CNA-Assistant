@@ -15,7 +15,7 @@ namespace CNA_Assistant
 
 		protected override void Entry()
 		{
-			// only decision is who has initiative
+			// only decision is whether or not user is player A (phasing first) or player B (phasing second)
 			throw new NotImplementedException();
 		}
 
