@@ -27,9 +27,9 @@ namespace CNA_Assistant
 
 		private int gameTurn;
 
-		private int opStage;
-
 		private bool userHasInitiative;
+
+		private TurnState turnState;
 
 		// Properties
 
@@ -50,9 +50,9 @@ namespace CNA_Assistant
 			}
 		}
 
-		public int OpStage; // Op Stage, zero to four - zero and four being before and after the Operations Stage of the turn. 
+		public int OpStage { get; internal set; } // Op Stage, zero to four - zero and four being before and after the Operations Stage of the turn. 
 
-		//public PhaseStep TurnStep; // current phase or step of the Sequence of Play - where in the turn we are up to, in other words. 
+		public TurnState TurnState { get; internal set; } // current phase or step of the Sequence of Play - where in the turn we are up to, in other words. 
 
 		public bool HasInitiative
 		{

@@ -61,12 +61,17 @@
     <Compile Include="BarrageEffects.cs" />
     <Compile Include="BarrageStep.cs" />
     <Compile Include="BarrageTarget.cs" />
+    <Compile Include="CombatSegment.cs" />
     <Compile Include="CombatStats.cs" />
     <Compile Include="CombatUnit.cs" />
+    <Compile Include="Command.cs" />
+    <Compile Include="Decision.cs" />
     <Compile Include="DiceRoll.cs" />
     <Compile Include="IGameCommands.cs" />
     <Compile Include="Game.cs" />
+    <Compile Include="InitiativeDeclarationPhase.cs" />
     <Compile Include="Squadron.cs" />
+    <Compile Include="StoresExpenditureStage.cs" />
     <Compile Include="SupplyDump.cs" />
     <Compile Include="SupplyPoint.cs" />
     <Compile Include="TOEStrengthPoint.cs" />
@@ -78,6 +83,7 @@
     <Compile Include="UnitCharacteristics.cs" />
     <Compile Include="UnitType.cs" />
     <Compile Include="ICapabilityPoints.cs" />
+    <Compile Include="WeatherDeterminationPhase.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
