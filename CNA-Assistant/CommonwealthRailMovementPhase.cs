@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace CNA_Assistant
 {
-	class PositionDeterminationSegment : TurnState
+	class CommonwealthRailMovementPhase : TurnState
 	{
-		internal PositionDeterminationSegment(Game game) : base(game)
+		internal CommonwealthRailMovementPhase(Game game) : base(game)
 		{
 
 		}
@@ -20,16 +20,12 @@ namespace CNA_Assistant
 
 		internal override void Execute(Command command)
 		{
-			// handle commands to assign barrage units Forward or Back, and to assign units to be in combat or not
 			throw new NotImplementedException();
 		}
 
 		internal override void Next()
 		{
-			if (Decisions.Count() == 0)
-			{
-				game.TurnState = new BarrageStep(game);
-			}
+			game.TurnState = new RepairPhase(game);
 		}
 	}
 }

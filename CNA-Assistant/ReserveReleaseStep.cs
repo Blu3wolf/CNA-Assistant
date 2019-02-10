@@ -6,35 +6,23 @@ using System.Threading.Tasks;
 
 namespace CNA_Assistant
 {
-	class BarrageStep : TurnState
+	class ReserveReleaseStep : TurnState
 	{
-		internal BarrageStep(Game game) : base(game)
-		{
-
-		}
-
-		private List<CombatUnit> FiringUnits;
-
-		private List<CombatUnit> UnitsInContact;
-
-		private List<BarrageTarget> BarrageTargets;
-		
-		// methods
-
-		private void NewBarrageTarget()
+		internal ReserveReleaseStep(Game game) : base(game)
 		{
 
 		}
 
 		protected override void Entry()
 		{
-
+			// generate Decisions
 			throw new NotImplementedException();
 		}
 
 		internal override void Execute(Command command)
 		{
-			// handle commands relevant to the Barrage step
+			// handle commands for the reserve release step
+			// one command allows user to go to a new movement segment
 			throw new NotImplementedException();
 		}
 
@@ -42,8 +30,9 @@ namespace CNA_Assistant
 		{
 			if (Decisions.Count() == 0)
 			{
-				game.TurnState = new RetreatBeforeAssaultStep(game);
+				game.TurnState = new TruckConvoyMovementPhase(game);
 			}
+			throw new NotImplementedException();
 		}
 	}
 }

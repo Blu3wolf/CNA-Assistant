@@ -42,13 +42,7 @@ namespace CNA_Assistant
 		public enum Side
 		{ Axis, Commonwealth }
 
-		public int GameTurn // Game Turn one through to one hundred eleven. 
-		{
-			get
-			{
-				return gameTurn;
-			}
-		}
+		public int GameTurn { get; internal set; }// Game Turn one through to one hundred eleven. 
 
 		public int OpStage { get; internal set; } // Op Stage, zero to four - zero and four being before and after the Operations Stage of the turn. 
 
@@ -56,7 +50,7 @@ namespace CNA_Assistant
 
 		public bool HasInitiative { get; internal set; }
 
-		public bool GoesFirst { get; internal set; } // set at start of ops stage. Sounds like I want an ops stage object!
+		public bool GoesSecond { get; internal set; } // set at start of ops stage. Sounds like I want an ops stage object!
 
 		public bool IsPhasing { get; internal set; }
 

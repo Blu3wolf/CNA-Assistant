@@ -6,35 +6,21 @@ using System.Threading.Tasks;
 
 namespace CNA_Assistant
 {
-	class BarrageStep : TurnState
+	class InitiativeDeterminationStage : TurnState
 	{
-		internal BarrageStep(Game game) : base(game)
-		{
-
-		}
-
-		private List<CombatUnit> FiringUnits;
-
-		private List<CombatUnit> UnitsInContact;
-
-		private List<BarrageTarget> BarrageTargets;
-		
-		// methods
-
-		private void NewBarrageTarget()
+		internal InitiativeDeterminationStage(Game game) : base(game)
 		{
 
 		}
 
 		protected override void Entry()
 		{
-
+			// only one decision to make: who has initiative
 			throw new NotImplementedException();
 		}
 
 		internal override void Execute(Command command)
 		{
-			// handle commands relevant to the Barrage step
 			throw new NotImplementedException();
 		}
 
@@ -42,7 +28,7 @@ namespace CNA_Assistant
 		{
 			if (Decisions.Count() == 0)
 			{
-				game.TurnState = new RetreatBeforeAssaultStep(game);
+				game.TurnState = new NavalConvoySchedulePhase(game);
 			}
 		}
 	}
