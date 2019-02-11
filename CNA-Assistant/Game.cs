@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -103,7 +104,9 @@ namespace CNA_Assistant
 
 		public List<Unit> Units { get; private set; }
 
-		public List<SupplyDump> SupplyDumps { get; private set; }
+		public ReadOnlyDictionary<int, SupplyDump> SupplyDumps { get => new ReadOnlyDictionary<int, SupplyDump>(supplyDumps); }
+
+		private Dictionary<int, SupplyDump> supplyDumps { get; } // int is Location ID (replace with Hex later)
 
 		// Methods
 

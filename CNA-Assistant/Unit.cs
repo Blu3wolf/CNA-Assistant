@@ -20,6 +20,12 @@ namespace CNA_Assistant
 
 		public int LightTruckBreakdownPoints { get; protected set; }
 
+		public int TurnStoresLastConsumed { get; protected set; }
+
+		abstract public int RequiredStores { get; protected set; }
+
+		public bool OnHalfRations { get; protected set; }
+
 		public int Stores { get; private set; }
 
 		public int Ammo { get; private set; }
@@ -35,6 +41,46 @@ namespace CNA_Assistant
 		public int HeavyTrucks { get; private set; }
 
 		// methods
+
+		internal void ConsumeStores(int gameturn)
+		{
+			if (RequiredStores >= Stores)
+			{
+				Stores -= RequiredStores;
+				TurnStoresLastConsumed = gameturn;
+			}
+		}
+
+		internal void ConsumeStores(int gameturn, int stores)
+		{
+			if (Stores + stores >= RequiredStores)
+			{
+				Stores -= (RequiredStores - stores);
+				TurnStoresLastConsumed = gameturn;
+			}
+			else
+			{
+				Stores += stores;
+			}
+		}
+
+		internal int SupplyStores(int stores)
+		{
+			if (Stores >= stores)
+			{
+				return Stores -= stores;
+			}
+			else
+			{
+				stores = Stores;
+				Stores = 0;
+				return stores;
+			}
+		}
+
+		internal abstract void AttritStores(int gameturn);
+
+		internal abstract void HalfRations(bool halfRations);
 
 		abstract public bool CanMove(); // depends whether the Unit is a TruckConvoy or a CombatUnit (or a Collection of ReplacementPoints?)
 
