@@ -106,7 +106,10 @@ namespace CNA_Assistant
 			}
 		}
 
-		internal abstract void AttritStores(int gameturn);
+		internal void AttritStores(int gameturn)
+		{
+			throw new NotImplementedException();
+		}
 
 		internal abstract void HalfRations(bool halfRations);
 

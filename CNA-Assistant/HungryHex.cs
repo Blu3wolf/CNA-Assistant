@@ -35,6 +35,10 @@ namespace CNA_Assistant
 				HalfRations();
 			}
 			Feed();
+			if (!IsFed)
+			{
+				starvingUnits = new List<Unit>();
+			}
 		}
 
 		public int Location { get; }
@@ -82,6 +86,8 @@ namespace CNA_Assistant
 		public SupplyDump SupplyDump { get; }
 
 		private List<Unit> units;
+
+		private List<Unit> starvingUnits;
 
 		private int gameturn;
 
@@ -143,11 +149,76 @@ namespace CNA_Assistant
 			}
 		}
 
-
-
-		public void Resolve()
+		public void NoRations(Unit unit, bool starve)
 		{
+			if (PresentStores < HalfRationsRequired)
+			{
+				if (starve)
+				{
+					if (!starvingUnits.Contains(unit))
+					{
+						starvingUnits.Add(unit);
+					}
+				}
+				else
+				{
+					if(starvingUnits.Contains(unit))
+					{
+						starvingUnits.Remove(unit);
+					}
+				}
+			}
+		}
 
+		public void Resolve() // refactor should be possible...
+		{
+			if (PresentStores < HalfRationsRequired)
+			{
+				IEnumerable<Unit> feedingUnits = from unit in Units
+												 where !starvingUnits.Contains(unit)
+												 select unit;
+				int rationsrequired = 0;
+				foreach (Unit unit in feedingUnits)
+				{
+					rationsrequired += unit.RequiredStores;
+				}
+				if (rationsrequired <= PresentStores)
+				{
+					foreach (Unit unit in feedingUnits)
+					{
+						if (unit.Stores >= unit.RequiredStores)
+						{
+							unit.ConsumeStores(gameturn);
+						}
+						else // another source (another unit, DOGs, SupplyDump) needs to supply this unit
+						{
+							unit.ConsumeStores(gameturn, SupplyDump.SupplyStores(unit.RequiredStores - unit.Stores));
+							if (unit.TurnStoresLastConsumed != gameturn) // still hungry!
+							{
+								// start looking...
+								foreach (Unit otherUnit in Units)
+								{
+									unit.ConsumeStores(gameturn, otherUnit.SupplyStores(unit.RequiredStores - unit.Stores));
+									if (unit.TurnStoresLastConsumed == gameturn)
+									{
+										continue;
+									}
+								}
+							}
+						}
+					}
+
+					foreach (Unit unit in starvingUnits)
+					{
+						unit.AttritStores(gameturn);
+					}
+					IsFed = true;
+				}
+			}
+			else
+			{
+				Feed();
+			}
 		}
 	}
 }

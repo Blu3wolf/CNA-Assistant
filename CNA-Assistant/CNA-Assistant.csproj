@@ -73,6 +73,7 @@
     <Compile Include="Decision.cs" />
     <Compile Include="DiceRoll.cs" />
     <Compile Include="ForceAssignmentStep.cs" />
+    <Compile Include="HungryHex.cs" />
     <Compile Include="IGameCommands.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="InitiativeDeclarationPhase.cs" />

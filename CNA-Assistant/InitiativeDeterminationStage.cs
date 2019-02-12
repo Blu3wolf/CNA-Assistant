@@ -15,10 +15,12 @@ namespace CNA_Assistant
 
 			}
 
+			private bool InitiativeDetermined;
+
 			protected override void Entry()
 			{
 				// only one decision to make: who has initiative
-				throw new NotImplementedException();
+				InitiativeDetermined = false;
 			}
 
 			internal override void Execute(Command command)
@@ -28,7 +30,7 @@ namespace CNA_Assistant
 
 			internal override void Next()
 			{
-				if (Decisions.Count() == 0)
+				if (InitiativeDetermined)
 				{
 					game.TurnState = new NavalConvoySchedulePhase(game);
 				}
