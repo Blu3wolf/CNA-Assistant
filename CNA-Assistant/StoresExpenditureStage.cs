@@ -7,170 +7,72 @@ using System.Threading.Tasks;
 
 namespace CNA_Assistant
 {
-	internal class StoresExpenditureStage : TurnState
+	public partial class Game
 	{
-		internal StoresExpenditureStage(Game game) : base(game)
+		internal class StoresExpenditureStage : TurnState
 		{
-			HungryHexes = new List<HungryHex>();
-		}
-
-		protected override void Entry()
-		{
-			// handle evaporation/spillage of fuel and water
-
-			// try to consume stores for Prisoners
-
-			// build list of hexes that contain units
-			List<int> Hexes = new List<int>();
-			foreach (Unit unit in game.Units)
+			internal StoresExpenditureStage(Game game) : base(game)
 			{
-				if (!Hexes.Contains(unit.Location))
+				game.hungryHexes = new List<HungryHex>();
+			}
+
+			protected override void Entry()
+			{
+				if (game.SideIs == Side.Commonwealth && game.GameTurn < 47)
 				{
-					Hexes.Add(unit.Location);
+					game.Evaporate(Evaporation.Flimsies);
 				}
-			}
-			// for each hex, check if enough stores are in that hex
-			// hexes that are oases automatically have enough stores
-			foreach (int location in Hexes)
-			{
-				HungryHexes.Add(new HungryHex(game, location));
-			}
-			foreach (HungryHex hex in HungryHexes.ToList())
-			{
-				if (hex.CanFeed)
+				else
 				{
-					hex.Feed();
-					HungryHexes.Remove(hex);
+					game.Evaporate(Evaporation.Jerrycans);
 				}
-			}
-			// if insufficient stores, generate a decision, else deduct required stores from that hex, starting with those units attached stores
-			// each decision then represents a hex with not enough stores - some units will have to go hungry
+				// try to consume stores for Prisoners
 
-			// hexes with PresentStores == HalfRationsRequired will need to go on half rations
-			// hexes with PresentStores > HalfRationsRequired will need some or all units to go on half rations
-			// hexes with PresentStores < HalfRationsRequired will need all units to go on half rations, and some or all units to go hungry
-
-			throw new NotImplementedException();
-		}
-
-		internal override void Execute(Command command)
-		{
-			// handle valid Commands to resolve decisions
-			throw new NotImplementedException();
-		}
-
-		internal override void Next()
-		{
-			if (HungryHexes.Count == 0)
-			{
-				game.OpStage = 1;
-				game.TurnState = new InitiativeDeclarationPhase(game);
-			}
-		}
-
-		private List<HungryHex> HungryHexes;
-
-		public class HungryHex
-		{
-			public HungryHex(Game game, int location)
-			{
-				gameturn = game.GameTurn;
-				Location = location;
-				if (game.SupplyDumps.TryGetValue(Location, out SupplyDump supplyDump))
-				{
-					SupplyDump = supplyDump;
-				}
-				units = new List<Unit>();
+				List<int> Hexes = new List<int>();
 				foreach (Unit unit in game.Units)
 				{
-					if (unit.Location == this.Location)
+					if (!Hexes.Contains(unit.Location))
 					{
-						units.Add(unit);
-						PresentStores += unit.Stores;
-						unit.HalfRations(false);
+						Hexes.Add(unit.Location);
 					}
 				}
-				if (SupplyDump != null)
+				// hexes that are oases automatically have enough stores!
+				foreach (int location in Hexes)
 				{
-					PresentStores += SupplyDump.Stores;
+					game.hungryHexes.Add(new HungryHex(game, location));
 				}
+				Next();
+
+				// hexes with PresentStores == HalfRationsRequired will need to go on half rations
+				// hexes with PresentStores > HalfRationsRequired will need some or all units to go on half rations
+				// hexes with PresentStores < HalfRationsRequired will need all units to go on half rations, and some or all units to go hungry
 
 			}
 
-			public int Location { get; }
-
-			public ReadOnlyCollection<Unit> Units { get => units.AsReadOnly(); }
-
-			public int RequiredStores
+			internal override void Execute(Command command)
 			{
-				get
+
+			}
+
+			private void RemoveFedHexes()
+			{
+				foreach (HungryHex hex in game.HungryHexes.ToList())
 				{
-					int rations = 0;
-					foreach (Unit unit in Units)
+					if (hex.IsFed)
 					{
-						rations += unit.RequiredStores;
-					}
-					return rations;
-				}
-			}
-
-			public int HalfRationsRequired
-			{
-				get
-				{
-					if (HalfRationsRequired == 0)
-					{
-						int rations = 0;
-						foreach (Unit unit in Units)
-						{
-							unit.HalfRations(true);
-							rations += unit.RequiredStores;
-							unit.HalfRations(false);
-						}
-						HalfRationsRequired = rations;
-					}
-					return HalfRationsRequired;
-				}
-				private set
-				{
-					HalfRationsRequired = value;
-				}
-			}
-
-			public int PresentStores { get; }
-
-			public SupplyDump SupplyDump { get; }
-
-			private List<Unit> units;
-
-			private int gameturn;
-
-			public bool CanFeed 
-			{
-				get => RequiredStores >= PresentStores;
-			}
-
-			public void Feed()
-			{
-				if (CanFeed)
-				{
-					foreach (Unit unit in Units)
-					{
-						if (unit.Stores >= unit.RequiredStores)
-						{
-							unit.ConsumeStores(gameturn);
-						}
-						else // another source (unit, DOGs, SupplyDump) needs to supply this unit
-						{
-							throw new NotImplementedException();
-						}
+						game.hungryHexes.Remove(hex);
 					}
 				}
 			}
 
-			public void Resolve()
+			internal override void Next()
 			{
-
+				RemoveFedHexes();
+				if (game.hungryHexes.Count == 0)
+				{
+					game.OpStage = 1;
+					game.TurnState = new InitiativeDeclarationPhase(game);
+				}
 			}
 		}
 	}

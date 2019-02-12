@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace CNA_Assistant
 {
-	abstract class Unit : ICapabilityPoints
+	abstract public class Unit : ICapabilityPoints
 	{
 		public int Location { get; private set; }
 
@@ -22,7 +23,20 @@ namespace CNA_Assistant
 
 		public int TurnStoresLastConsumed { get; protected set; }
 
-		abstract public int RequiredStores { get; protected set; }
+		public int RequiredStores
+		{
+			get
+			{
+				// if Engineer or HQ, return 1 instead
+				int rations = 4;
+				if (OnHalfRations)
+				{
+					rations = 2;
+				}
+				int toes = InfantryTOE + TOEStrengthPoints.Count();
+				return rations * toes;
+			}
+		}
 
 		public bool OnHalfRations { get; protected set; }
 
@@ -40,11 +54,24 @@ namespace CNA_Assistant
 
 		public int HeavyTrucks { get; private set; }
 
+		public int InfantryTOE { get; private set; } //  number of Infantry TOE Strength Points / Replacement Points
+
+		public ReadOnlyCollection<TOEStrengthPoint> TOEStrengthPoints
+		{
+			get
+			{
+				return strengthPoints.AsReadOnly();
+			}
+		}
+
+		protected List<TOEStrengthPoint> strengthPoints;
+
+
 		// methods
 
 		internal void ConsumeStores(int gameturn)
 		{
-			if (RequiredStores >= Stores)
+			if (Stores >= RequiredStores && TurnStoresLastConsumed != gameturn)
 			{
 				Stores -= RequiredStores;
 				TurnStoresLastConsumed = gameturn;
@@ -53,7 +80,7 @@ namespace CNA_Assistant
 
 		internal void ConsumeStores(int gameturn, int stores)
 		{
-			if (Stores + stores >= RequiredStores)
+			if (Stores + stores >= RequiredStores && TurnStoresLastConsumed != gameturn)
 			{
 				Stores -= (RequiredStores - stores);
 				TurnStoresLastConsumed = gameturn;
@@ -68,7 +95,8 @@ namespace CNA_Assistant
 		{
 			if (Stores >= stores)
 			{
-				return Stores -= stores;
+				Stores -= stores;
+				return stores;
 			}
 			else
 			{

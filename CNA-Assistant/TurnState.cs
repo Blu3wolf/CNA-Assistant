@@ -25,11 +25,7 @@ namespace CNA_Assistant
 
 		protected Game game { get; }
 
-		public ReadOnlyCollection<Decision> Decisions { get => decisions.AsReadOnly(); }
-
 		// Fields
-
-		protected List<Decision> decisions;
 
 		// Methods
 

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CNA_Assistant
 {
-	class Game : IGameCommands
+	public partial class Game : IGameCommands
 	{
 		/* The top level object that represents the entire Game model. A reference to the PlayerSide is the primary tool required by the ViewModel, to manipulate the game state.
 		 * All units the user has, the current game turn, all of it. Saving the game represents essentially writing the state of the PlayerSide to disc. Loading the game, creating
@@ -26,12 +26,6 @@ namespace CNA_Assistant
 
 		// Fields (backing)
 
-		private int gameTurn;
-
-		private bool userHasInitiative;
-
-		private TurnState turnState;
-
 		// Properties
 
 		public Side SideIs
@@ -43,17 +37,17 @@ namespace CNA_Assistant
 		public enum Side
 		{ Axis, Commonwealth }
 
-		public int GameTurn { get; internal set; }// Game Turn one through to one hundred eleven. 
+		public int GameTurn { get; private set; }// Game Turn one through to one hundred eleven. 
 
-		public int OpStage { get; internal set; } // Op Stage, zero to four - zero and four being before and after the Operations Stage of the turn. 
+		public int OpStage { get; private set; } // Op Stage, zero to four - zero and four being before and after the Operations Stage of the turn. 
 
-		public TurnState TurnState { get; internal set; } // current phase or step of the Sequence of Play - where in the turn we are up to, in other words. 
+		private TurnState TurnState { get; set; } // current phase or step of the Sequence of Play - where in the turn we are up to, in other words. 
 
-		public bool HasInitiative { get; internal set; }
+		public bool HasInitiative { get; private set; }
 
-		public bool GoesSecond { get; internal set; } // set at start of ops stage. Sounds like I want an ops stage object!
+		public bool GoesSecond { get; private set; } // set at start of ops stage. Sounds like I want an ops stage object!
 
-		public bool IsPhasing { get; internal set; }
+		public bool IsPhasing { get; private set; }
 
 		public DateTime GameDate // Finds the approximate date of the current GameTurn / OpStage combination and returns it.
 		{
@@ -108,11 +102,15 @@ namespace CNA_Assistant
 
 		private Dictionary<int, SupplyDump> supplyDumps { get; } // int is Location ID (replace with Hex later)
 
+		public ReadOnlyCollection<HungryHex> HungryHexes => hungryHexes.AsReadOnly();
+
+		private List<HungryHex> hungryHexes;
+
 		// Methods
 
 		public void NextPhase()
 		{
-			// call Game.TurnState.Next();
+			TurnState.Next();
 		}
 
 		public int GetInitiativeRating(Side side)
@@ -158,17 +156,17 @@ namespace CNA_Assistant
 
 			if (roll > oproll)
 			{
-				userHasInitiative = true;
+				HasInitiative = true;
 			}
 			else
 			{
-				userHasInitiative = false;
+				HasInitiative = false;
 			}
 		}
 
 		public void DetermineInitiative(bool hasInitiative)
 		{
-			userHasInitiative = hasInitiative;
+			HasInitiative = hasInitiative;
 		}
 
 		public int AxisGetNextTurnShippingLimit(DiceRoll diceRoll)
@@ -219,7 +217,7 @@ namespace CNA_Assistant
 			Flimsies, Jerrycans, HotWeather
 		}
 
-		private void Evaporate(Evaporation evaporation) 
+		private void Evaporate(Evaporation evaporation)
 		{
 			foreach (Unit unit in Units)
 			{
@@ -227,7 +225,7 @@ namespace CNA_Assistant
 			}
 
 			// all Fuel and Water sources that have limits also have evaporation. Cairo has no evaporation (unlimited supplies). Cities have no water evaporation (unlimited water). 
-			foreach (SupplyDump dump in SupplyDumps)
+			foreach (SupplyDump dump in SupplyDumps.Values)
 			{
 				dump.Evaporate(evaporation);
 			}
@@ -235,33 +233,31 @@ namespace CNA_Assistant
 
 		public void TestSkipToNextGameTurn()
 		{
-			gameTurn += 1;
-			opStage = 0;
+			GameTurn += 1;
+			OpStage = 0;
 		}
 
 		public void TestGetDateAtTurn(int gt, int os)
 		{
 			int curGameTurn = GameTurn;
 			int curOpStage = OpStage;
-			gameTurn = gt;
-			opStage = os;
+			GameTurn = gt;
+			OpStage = os;
 			Console.WriteLine(GameDate);
-			gameTurn = curGameTurn;
-			opStage = curOpStage;
+			GameTurn = curGameTurn;
+			OpStage = curOpStage;
 		}
 
 		public void TestGetDateAtTurn(int gt)
 		{
 			int curGameTurn = GameTurn;
 			int curOpStage = OpStage;
-			gameTurn = gt;
-			opStage = 0;
+			GameTurn = gt;
+			OpStage = 0;
 			Console.WriteLine(GameDate);
-			gameTurn = curGameTurn;
-			opStage = curOpStage;
+			GameTurn = curGameTurn;
+			OpStage = curOpStage;
 		}
-
-
 	}
 
 	enum ShippingLanes

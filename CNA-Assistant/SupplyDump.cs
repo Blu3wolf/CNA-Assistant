@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CNA_Assistant
 {
-	public class SupplyDump
+	public class SupplyDump : IEvaporate
 	{
 		public SupplyDump()
 		{
@@ -26,6 +26,21 @@ namespace CNA_Assistant
 		public int Water { get; private set; }
 
 		// methods
+
+		internal int SupplyStores(int stores)
+		{
+			if (Stores >= stores)
+			{
+				Stores -= stores;
+				return stores;
+			}
+			else
+			{
+				stores = Stores;
+				Stores = 0;
+				return stores;
+			}
+		}
 
 		internal void Evaporate(Game.Evaporation evaporation)
 		{

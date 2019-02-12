@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CNA_Assistant
 {
-	class CombatUnit : Unit
+	public class CombatUnit : Unit
 	{
 		// properties
 
@@ -110,17 +110,8 @@ namespace CNA_Assistant
 			}
 		}
 
-		public int InfantryTOE { get; private set; } //  number of Infantry TOE Strength Points attached to the unit
 
-		private List<TOEStrengthPoint> strengthPoints;
-
-		public ReadOnlyCollection<TOEStrengthPoint> TOEStrengthPoints
-		{
-			get
-			{
-				return strengthPoints.AsReadOnly();
-			}
-		}
+		
 
 		public bool OutstandingDecisions { get => throw new NotImplementedException(); } // returns true if the Unit requires decisions to be made before moving onto next step, for instance barrage outstanding
 

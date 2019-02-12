@@ -6,29 +6,32 @@ using System.Threading.Tasks;
 
 namespace CNA_Assistant
 {
-	class InitiativeDeterminationStage : TurnState
+	public partial class Game
 	{
-		internal InitiativeDeterminationStage(Game game) : base(game)
+		class InitiativeDeterminationStage : TurnState
 		{
-
-		}
-
-		protected override void Entry()
-		{
-			// only one decision to make: who has initiative
-			throw new NotImplementedException();
-		}
-
-		internal override void Execute(Command command)
-		{
-			throw new NotImplementedException();
-		}
-
-		internal override void Next()
-		{
-			if (Decisions.Count() == 0)
+			internal InitiativeDeterminationStage(Game game) : base(game)
 			{
-				game.TurnState = new NavalConvoySchedulePhase(game);
+
+			}
+
+			protected override void Entry()
+			{
+				// only one decision to make: who has initiative
+				throw new NotImplementedException();
+			}
+
+			internal override void Execute(Command command)
+			{
+				throw new NotImplementedException();
+			}
+
+			internal override void Next()
+			{
+				if (Decisions.Count() == 0)
+				{
+					game.TurnState = new NavalConvoySchedulePhase(game);
+				}
 			}
 		}
 	}
