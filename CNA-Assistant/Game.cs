@@ -113,7 +113,7 @@ namespace CNA_Assistant
 			TurnState.Next();
 		}
 
-		public int GetInitiativeRating(Side side)
+		public int GetInitiativeRating(Side side) // move to InitiativeDeterminationStage perhaps?
 		{
 			if (side == Side.Axis)
 			{
@@ -143,30 +143,12 @@ namespace CNA_Assistant
 
 		public void DetermineInitiative(DiceRoll diceRoll, DiceRoll enemyRoll)
 		{
-			int roll = diceRoll.Result + GetInitiativeRating(SideIs);
-			int oproll = enemyRoll.Result + GetInitiativeRating(EnemySide);
-
-			while (roll == oproll)
-			{
-				diceRoll = new DiceRoll();
-				enemyRoll = new DiceRoll();
-				roll = diceRoll.Result + GetInitiativeRating(SideIs);
-				oproll = enemyRoll.Result + GetInitiativeRating(EnemySide);
-			}
-
-			if (roll > oproll)
-			{
-				HasInitiative = true;
-			}
-			else
-			{
-				HasInitiative = false;
-			}
+			TurnState.Execute(new Command(Command.Type.DetermineInitiative, diceRoll, enemyRoll));
 		}
 
 		public void DetermineInitiative(bool hasInitiative)
 		{
-			HasInitiative = hasInitiative;
+			TurnState.Execute(new Command(Command.Type.DetermineInitiative, hasInitiative));
 		}
 
 		public int AxisGetNextTurnShippingLimit(DiceRoll diceRoll)

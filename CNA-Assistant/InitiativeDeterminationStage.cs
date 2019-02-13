@@ -15,17 +15,54 @@ namespace CNA_Assistant
 
 			}
 
-			private bool InitiativeDetermined;
+			public bool InitiativeDetermined { get; private set; }
 
 			protected override void Entry()
 			{
-				// only one decision to make: who has initiative
 				InitiativeDetermined = false;
 			}
 
 			internal override void Execute(Command command)
 			{
-				throw new NotImplementedException();
+				switch (command.CommandType)
+				{
+					case Command.Type.DetermineInitiative:
+						{
+							if (command.Params[0] is bool)
+							{
+								DetermineInitiative((bool)command.Params[0]);
+							}
+							if (command.Params[0] is DiceRoll && command.Params[1] is DiceRoll)
+							{
+								DetermineInitiative((DiceRoll)command.Params[0], (DiceRoll)command.Params[1]);
+							}
+						}
+						break;
+					default:
+						break;
+				}
+			}
+
+			private void DetermineInitiative(bool hasInitiative)
+			{
+				game.HasInitiative = hasInitiative;
+				InitiativeDetermined = true;
+				Next();
+			}
+
+			private void DetermineInitiative(DiceRoll diceRoll, DiceRoll enemyRoll)
+			{
+				int roll = diceRoll.Result + game.GetInitiativeRating(game.SideIs);
+				int oproll = enemyRoll.Result + game.GetInitiativeRating(game.EnemySide);
+
+				if (roll > oproll)
+				{
+					DetermineInitiative(true);
+				}
+				else if(roll < oproll)
+				{
+					DetermineInitiative(false);
+				}
 			}
 
 			internal override void Next()
