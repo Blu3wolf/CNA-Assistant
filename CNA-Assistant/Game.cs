@@ -151,47 +151,10 @@ namespace CNA_Assistant
 			TurnState.Execute(new Command(Command.Type.DetermineInitiative, hasInitiative));
 		}
 
-		public int AxisGetNextTurnShippingLimit(DiceRoll diceRoll)
+		public int AxisSetNextTurnShippingLimit(DiceRoll diceRoll)
 		{
-			// if that isnt a code smell, I dont know what is
-			int supply = 0;
-			if ((GameTurn < 21) || (GameTurn > 68 && GameTurn < 77) || (GameTurn > 92 && GameTurn < 97))
-			{
-				// then supply level is B
-				supply = 7000 + 1500 * diceRoll.Result;
-			}
-			else if ((GameTurn > 60 && GameTurn < 65) || (GameTurn > 84 && GameTurn < 89) || (GameTurn > 100 && GameTurn < 105))
-			{
-				// then supply level is A
-				supply = 6000 + 1000 * diceRoll.Result;
-			}
-			else if ((GameTurn > 40 && GameTurn < 45) || (GameTurn > 48 && GameTurn < 53) || (GameTurn > 64 && GameTurn < 69) || GameTurn > 108)
-			{
-				// then supply level is C
-				supply = 10000 + 1500 * diceRoll.Result;
-			}
-			else if ((GameTurn > 32 && GameTurn < 37) || (GameTurn > 52 && GameTurn < 57) || (GameTurn > 96 && GameTurn < 101))
-			{
-				// then supply level is D
-				supply = 11000 + 2000 * diceRoll.Result;
-			}
-			else if ((GameTurn > 20 && GameTurn < 25) || (GameTurn > 28 && GameTurn < 33) || (GameTurn > 44 && GameTurn < 61))
-			{
-				// then supply is E (last condition satisfies C and D as well, but those were checked above and this is an else)
-				supply = 11000 + 2500 * diceRoll.Result;
-			}
-			else if ((GameTurn < 29) || (GameTurn > 80 && GameTurn < 93))
-			{
-				// then supply is F (as long as E was checked above)
-				supply = 15000 + 2000 * diceRoll.Result;
-			}
-			else
-			{
-				// supply level is G by omission
-				supply = 32000 + 3000 * diceRoll.Result;
-			}
+			TurnState.Execute(new Command(Command.Type.AxisDetermineNextShippingLimit, diceRoll));
 
-			return supply;
 		}
 
 		public enum Evaporation

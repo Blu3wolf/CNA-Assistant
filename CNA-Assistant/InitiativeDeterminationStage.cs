@@ -69,7 +69,14 @@ namespace CNA_Assistant
 			{
 				if (InitiativeDetermined)
 				{
-					game.TurnState = new NavalConvoySchedulePhase(game);
+					if (game.SideIs == Side.Axis)
+					{
+						game.TurnState = new NavalConvoySchedulePhase(game);
+					}
+					else
+					{
+						game.TurnState = new NavalConvoyResolutionPhase(game);
+					}
 				}
 			}
 		}
