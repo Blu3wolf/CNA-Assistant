@@ -6,8 +6,13 @@ using System.Threading.Tasks;
 
 namespace CNA_Assistant
 {
-	class Convoy
+	public class Convoy
 	{
+		public Convoy()
+		{
+
+		}
+
 		public int Tonnage
 		{
 			get

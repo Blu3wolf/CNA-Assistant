@@ -89,6 +89,7 @@
     <Compile Include="ReserveDesignationPhase.cs" />
     <Compile Include="ReserveReleaseStep.cs" />
     <Compile Include="RetreatBeforeAssaultStep.cs" />
+    <Compile Include="Schedule.cs" />
     <Compile Include="Squadron.cs" />
     <Compile Include="StoresExpenditureStage.cs" />
     <Compile Include="SupplyDump.cs" />

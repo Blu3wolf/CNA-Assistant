@@ -115,12 +115,35 @@ namespace CNA_Assistant
 
 			}
 
+			private void SetConvoy(Convoy convoy, ShippingLanes lane)
+			{
+				// create that Schedule, see if its valid
+				Schedule schedule = game.NextTurnSchedule.SetConvoy(convoy, lane);
+				// check if its valid?
+				// this convoy added to the list has to comply with total tonnage limit
+
+				// this convoy has to be unloadable this turn at the destination port
+
+				SetSchedule(schedule);
+			}
+
+			private void SetSchedule(Schedule schedule)
+			{
+				if (schedule.Tonnage <= ShippingLimit)
+				{
+					game.NextTurnSchedule = schedule;
+				}
+			}
+
 			internal override void Next()
 			{
 				// check if all scheduled Convoys are valid 
 				// limits include port limits, and shipping limit
 
-				game.TurnState = new NavalConvoyResolutionPhase(game);
+				if (game.NextTurnSchedule.Tonnage <= ShippingLimit)
+				{
+					game.TurnState = new NavalConvoyResolutionPhase(game);
+				}
 			}
 		}
 	}

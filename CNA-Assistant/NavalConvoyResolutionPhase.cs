@@ -6,29 +6,32 @@ using System.Threading.Tasks;
 
 namespace CNA_Assistant
 {
-	class NavalConvoyResolutionPhase : TurnState
+	public partial class Game
 	{
-		internal NavalConvoyResolutionPhase(Game game) : base(game)
+		class NavalConvoyResolutionPhase : TurnState
 		{
-
-		}
-
-		protected override void Entry()
-		{
-			// decisions are relatively abstract at present, with the air game abstracted there is only an abstract attack on the Axis convoys.
-			throw new NotImplementedException();
-		}
-
-		internal override void Execute(Command command)
-		{
-			throw new NotImplementedException();
-		}
-
-		internal override void Next()
-		{
-			if (Decisions.Count() == 0)
+			internal NavalConvoyResolutionPhase(Game game) : base(game)
 			{
-				game.TurnState = new StoresExpenditureStage(game);
+
+			}
+
+			protected override void Entry()
+			{
+				// decisions are relatively abstract at present, with the air game abstracted there is only an abstract attack on the Axis convoys.
+				throw new NotImplementedException();
+			}
+
+			internal override void Execute(Command command)
+			{
+				throw new NotImplementedException();
+			}
+
+			internal override void Next()
+			{
+				if (Decisions.Count() == 0)
+				{
+					game.TurnState = new StoresExpenditureStage(game);
+				}
 			}
 		}
 	}

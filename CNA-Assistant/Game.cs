@@ -106,6 +106,10 @@ namespace CNA_Assistant
 
 		private List<HungryHex> hungryHexes;
 
+		public Schedule NextTurnSchedule { get; private set; }
+
+		public Schedule ThisTurnSchedule { get; private set; }
+
 		// Methods
 
 		public void NextPhase()
@@ -151,7 +155,7 @@ namespace CNA_Assistant
 			TurnState.Execute(new Command(Command.Type.DetermineInitiative, hasInitiative));
 		}
 
-		public int AxisSetNextTurnShippingLimit(DiceRoll diceRoll)
+		public void SetNextTurnShippingLimit(DiceRoll diceRoll)
 		{
 			TurnState.Execute(new Command(Command.Type.AxisDetermineNextShippingLimit, diceRoll));
 
@@ -205,7 +209,7 @@ namespace CNA_Assistant
 		}
 	}
 
-	enum ShippingLanes
+	public enum ShippingLanes
 	{
 		SicilyBizerta, SicilyTripoli, ItalyBenghazi, GreeceBenghazi, GreeceTobruk, ItalyTobruk
 	}
