@@ -23,8 +23,21 @@ namespace CNA_Assistant
 
 			internal override void Execute(Command command)
 			{
-				// handle valid commands to determine weather, possibly add further decisions based on results of those commands
-				throw new NotImplementedException();
+				switch (command.CommandType)
+				{
+					case Command.Type.DetermineWeather:
+						if (command.Params[0] is TwoDice)
+						{
+							RollWeather((TwoDice)command.Params[0]);
+						}
+						else if (command.Params[0] is DiceRoll)
+						{
+							RollWeatherLocations((DiceRoll)command.Params[0]);
+						}
+						break;
+					default:
+						break;
+				}
 			}
 
 			private bool WeatherSet;
@@ -87,6 +100,7 @@ namespace CNA_Assistant
 				else if (roll >= minHot)
 				{
 					weather = Weather.Hot;
+					game.Evaporate(Evaporation.HotWeather);
 				}
 
 				SetWeather(weather);
