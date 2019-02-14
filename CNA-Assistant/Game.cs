@@ -96,6 +96,15 @@ namespace CNA_Assistant
 			Spring, Summer, Autumn, Winter
 		}
 
+		public enum Weather
+		{
+			Normal, Hot, Sandstorm, Rainstorm
+		}
+
+		public Weather CurrentWeather { get; private set; }
+
+		private int[] WeatherLocations { get; set; }
+
 		public List<Unit> Units { get; private set; }
 
 		public ReadOnlyDictionary<int, SupplyDump> SupplyDumps { get => new ReadOnlyDictionary<int, SupplyDump>(supplyDumps); }
@@ -178,6 +187,35 @@ namespace CNA_Assistant
 			{
 				dump.Evaporate(evaporation);
 			}
+		}
+
+		public Weather GetWeather(int location)
+		{
+			if (CurrentWeather == Weather.Hot || CurrentWeather == Weather.Normal)
+			{
+				return CurrentWeather;
+			}
+			else
+			{
+				int map = location / 10000;
+				if (map > 0 && map <= 5)
+				{
+					if (WeatherLocations.Contains(map)) // technically, also if sandstorms and delta terrain, return Normal weather
+					{
+						return CurrentWeather;
+					}
+					else
+					{
+						return Weather.Normal;
+					}
+				}
+				else
+				{
+					throw new ArgumentOutOfRangeException("location");
+				}
+			}
+			
+			
 		}
 
 		public void TestSkipToNextGameTurn()
