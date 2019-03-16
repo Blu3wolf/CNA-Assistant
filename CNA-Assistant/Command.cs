@@ -18,12 +18,13 @@ namespace CNA_Assistant
 
 		public Object[] Params { get; }
 
+
+
 		public enum Type
 		{
 			DetermineInitiative,
 			AxisDetermineNextShippingLimit,
 			AxisSetConvoy,
-
 			DeclareInitiative,
 			DetermineWeather,
 

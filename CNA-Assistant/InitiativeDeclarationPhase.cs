@@ -17,12 +17,12 @@ namespace CNA_Assistant
 
 			protected override void Entry()
 			{
-				// only decision is whether or not user is player A (phasing first) or player B (phasing second)
-				throw new NotImplementedException();
+				
 			}
 
 			internal override void Execute(Command command)
 			{
+				// only decision is whether or not user is player A (phasing first) or player B (phasing second)
 				switch (command.CommandType)
 				{
 					case Command.Type.DeclareInitiative:

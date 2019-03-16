@@ -14,9 +14,10 @@ namespace CNA_Assistant
 		 * 
 		 * It is seeming that this PlayerSide object is probably far too large, based on a cursory read of Fowler's 'Refactoring'. It should probably be broken down into smaller objects. 
 		 *
-		 * What should happen if the User sends an invalid command? Either one that doesnt make sense for the current game state, or one that makes sense but has garbage data? */
+		 * What should happen if the User sends an invalid command? Either one that doesnt make sense for the current game state, or one that makes sense but has garbage data?
+		 * Ignore it! */
 
-		void NextPhase(); // the user is finished with the current Phase and wants to move on. Not allowed if the current phase has outstanding decisions to make!
+		void Next(); // the user is finished with the current Step and wants to move on. Not allowed if the current phase has outstanding decisions to make!
 
 		void DetermineInitiative(DiceRoll userThrow, DiceRoll enemyThrow); // Only makes sense if the current phase is DetermineInitiative. Passes DiceRolls to the model, and the model decides if the user has initiative or not.
 

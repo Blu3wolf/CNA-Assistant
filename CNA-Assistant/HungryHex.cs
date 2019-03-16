@@ -11,12 +11,13 @@ namespace CNA_Assistant
 	{
 		public HungryHex(Game game, int location)
 		{
+			this.game = game;
 			gameturn = game.GameTurn;
 			Location = location;
-			if (game.SupplyDumps.TryGetValue(Location, out SupplyDump supplyDump))
+			if (game.SupplyDumps.TryGetValue(Location, out LocationSupplies supplyDump))
 			{
 				SupplyDump = supplyDump;
-				PresentStores += SupplyDump.Stores;
+				PresentStores = SupplyDump.Stores;
 			}
 			units = new List<Unit>();
 			foreach (Unit unit in game.Units)
@@ -29,17 +30,18 @@ namespace CNA_Assistant
 				}
 			}
 
-			
-			if (HalfRationsRequired >= PresentStores)
+			if (HalfRationsRequired >= PresentStores && !game.Oases.Contains(this.Location))
 			{
 				HalfRations();
 			}
-			Feed();
+			FeedHex();
 			if (!IsFed)
 			{
 				starvingUnits = new List<Unit>();
 			}
 		}
+
+		public Game game;
 
 		public int Location { get; }
 
@@ -83,7 +85,7 @@ namespace CNA_Assistant
 
 		public int PresentStores { get; }
 
-		public SupplyDump SupplyDump { get; }
+		public LocationSupplies SupplyDump { get; }
 
 		private List<Unit> units;
 
@@ -93,39 +95,75 @@ namespace CNA_Assistant
 
 		public bool CanFeed
 		{
-			get => PresentStores >= RequiredStores;
+			get => game.Oases.Contains(this.Location) || PresentStores >= RequiredStores;
 		}
 
 		public bool IsFed {	get; private set; }
 
-		public void Feed()
+		public void FeedHex()
 		{
 			if (CanFeed && !IsFed)
 			{
 				foreach (Unit unit in Units)
 				{
-					if (unit.Stores >= unit.RequiredStores)
+					FeedUnit(unit);
+				}
+				IsFed = true;
+			}
+		}
+
+		private void FeedUnit(Unit unit)
+		{
+			if (unit.Stores >= unit.RequiredStores || game.Oases.Contains(this.Location))
+			{
+				unit.ConsumeOwnStores();
+			}
+			else // another source (another unit, DOGs, SupplyDump) needs to supply this unit
+			{
+				if (SupplyDump.Stores >= unit.RequiredStores - unit.Stores)
+				{
+					SupplyDump.WithdrawStores(unit.RequiredStores - unit.Stores);
+					unit.ConsumeStores(unit.RequiredStores - unit.Stores);
+				}
+
+				if (unit.TurnStoresLastConsumed != gameturn) // still hungry!
+				{
+					// start looking...
+					int dumpstores = SupplyDump.Stores;
+					SupplyDump.WithdrawStores(dumpstores);
+					unit.ConsumeStores(dumpstores);
+
+					foreach (Unit otherUnit in Units)
 					{
-						unit.ConsumeStores(gameturn);
-					}
-					else // another source (another unit, DOGs, SupplyDump) needs to supply this unit
-					{
-						unit.ConsumeStores(gameturn, SupplyDump.SupplyStores(unit.RequiredStores - unit.Stores));
-						if (unit.TurnStoresLastConsumed != gameturn) // still hungry!
+						int deficit = unit.RequiredStores - unit.Stores;
+						if (otherUnit.Stores >= deficit)
 						{
-							// start looking...
-							foreach (Unit otherUnit in Units)
+							otherUnit.SupplyStores(deficit);
+							unit.ConsumeStores(deficit);
+						}
+						if (unit.TurnStoresLastConsumed == gameturn)
+						{
+							continue;
+						}
+					}
+
+					if (unit.TurnStoresLastConsumed != gameturn) // still hungry...
+					{
+						foreach (Unit otherUnit in Units)
+						{
+							int xferstores = otherUnit.Stores;
+							otherUnit.SupplyStores(xferstores);
+							unit.ConsumeStores(xferstores);
+
+							if (unit.TurnStoresLastConsumed == gameturn)
 							{
-								unit.ConsumeStores(gameturn, otherUnit.SupplyStores(unit.RequiredStores - unit.Stores));
-								if (unit.TurnStoresLastConsumed == gameturn)
-								{
-									continue;
-								}
+								continue;
 							}
 						}
 					}
+
+					// possibly still hungry..?
 				}
-				IsFed = true;
 			}
 		}
 
@@ -186,38 +224,19 @@ namespace CNA_Assistant
 				{
 					foreach (Unit unit in feedingUnits)
 					{
-						if (unit.Stores >= unit.RequiredStores)
-						{
-							unit.ConsumeStores(gameturn);
-						}
-						else // another source (another unit, DOGs, SupplyDump) needs to supply this unit
-						{
-							unit.ConsumeStores(gameturn, SupplyDump.SupplyStores(unit.RequiredStores - unit.Stores));
-							if (unit.TurnStoresLastConsumed != gameturn) // still hungry!
-							{
-								// start looking...
-								foreach (Unit otherUnit in Units)
-								{
-									unit.ConsumeStores(gameturn, otherUnit.SupplyStores(unit.RequiredStores - unit.Stores));
-									if (unit.TurnStoresLastConsumed == gameturn)
-									{
-										continue;
-									}
-								}
-							}
-						}
+						FeedUnit(unit);
 					}
 
 					foreach (Unit unit in starvingUnits)
 					{
-						unit.AttritStores(gameturn);
+						unit.AttritStores();
 					}
 					IsFed = true;
 				}
 			}
 			else
 			{
-				Feed();
+				FeedHex();
 			}
 		}
 	}

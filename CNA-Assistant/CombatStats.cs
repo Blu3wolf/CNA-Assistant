@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CNA_Assistant
 {
-	class CombatStats
+	public class CombatStats
 	{
 		public int CapabilityPointAllowance { get; }
 

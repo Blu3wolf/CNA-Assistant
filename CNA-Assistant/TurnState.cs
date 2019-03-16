@@ -57,23 +57,4 @@ namespace CNA_Assistant
 		                          // ... If Player B, start the next Ops Stage. If Ops Stage is 3 and Player B, continue to next turn instead.
 		                          // CompleteOpsStage covers almost all resets - such as resetting Capability Points expended, for instance.
 	}
-
-	enum OrganisationSegment
-	{
-		WaterDistribution,
-		Reorganisation,
-		Attrition,
-		Construction,
-		Training,
-		SupplyDistribution,
-		TacticalShipping
-	}
-
-	enum MovementAndCombatSegment
-	{
-		Movement,
-		BreakdownDetermination,
-		Combat,
-		ReserveRelease
-	}
 }

@@ -9,6 +9,8 @@ namespace CNA_Assistant
 {
 	abstract public class Unit : ICapabilityPoints
 	{
+		public Game Game { get; }
+
 		public int Location { get; private set; }
 
 		public int CapabilityPointsExpended { get; protected set; }
@@ -28,6 +30,7 @@ namespace CNA_Assistant
 			get
 			{
 				// if Engineer or HQ, return 1 instead
+				// override for virtually all children...
 				int rations = 4;
 				if (OnHalfRations)
 				{
@@ -69,21 +72,25 @@ namespace CNA_Assistant
 
 		// methods
 
-		internal void ConsumeStores(int gameturn)
+		internal void ConsumeOwnStores()
 		{
-			if (Stores >= RequiredStores && TurnStoresLastConsumed != gameturn)
+			if (Game.Oases.Contains(this.Location))
+			{
+				TurnStoresLastConsumed = Game.GameTurn;
+			}
+			else if ((Stores >= RequiredStores && TurnStoresLastConsumed != Game.GameTurn))
 			{
 				Stores -= RequiredStores;
-				TurnStoresLastConsumed = gameturn;
+				TurnStoresLastConsumed = Game.GameTurn;
 			}
 		}
 
-		internal void ConsumeStores(int gameturn, int stores)
+		internal void ConsumeStores(int stores)
 		{
-			if (Stores + stores >= RequiredStores && TurnStoresLastConsumed != gameturn)
+			if (Stores + stores >= RequiredStores && TurnStoresLastConsumed != Game.GameTurn)
 			{
 				Stores -= (RequiredStores - stores);
-				TurnStoresLastConsumed = gameturn;
+				TurnStoresLastConsumed = Game.GameTurn;
 			}
 			else
 			{
@@ -91,25 +98,19 @@ namespace CNA_Assistant
 			}
 		}
 
-		internal int SupplyStores(int stores)
+		internal void SupplyStores(int stores)
 		{
 			if (Stores >= stores)
 			{
 				Stores -= stores;
-				return stores;
 			}
 			else
 			{
-				stores = Stores;
-				Stores = 0;
-				return stores;
+				throw new ArgumentOutOfRangeException("stores", "Insufficient Stores on hand");
 			}
 		}
 
-		internal void AttritStores(int gameturn)
-		{
-			throw new NotImplementedException();
-		}
+		abstract internal void AttritStores();
 
 		internal abstract void HalfRations(bool halfRations);
 

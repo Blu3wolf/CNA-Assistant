@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CNA_Assistant
 {
-	class TOEStrengthPoint : CombatStats // technically, Tank and Gun points. Infantry points remain integer properties of CombatUnits. 
+	public class TOEStrengthPoint : CombatStats // technically, Tank and Gun points. Infantry points remain integer properties of CombatUnits. 
 	{
 		public int FuelRate { get; }
 

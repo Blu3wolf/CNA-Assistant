@@ -6,48 +6,58 @@ using System.Threading.Tasks;
 
 namespace CNA_Assistant
 {
-	class OrganisationPhase : TurnState
+	public partial class Game
 	{
-		internal OrganisationPhase(Game game) : base(game)
+		partial class OrganisationPhase : TurnState
 		{
-
-		}
-
-		protected override void Entry()
-		{
-			// generate decisions
-			throw new NotImplementedException();
-		}
-
-		internal override void Execute(Command command)
-		{
-			// handle commands relevant to organisation phase
-			throw new NotImplementedException();
-		}
-
-		internal override void Next()
-		{
-			if (Decisions.Count == 0)
+			internal OrganisationPhase(Game game) : base(game)
 			{
-				// add scheduled reinforcements, replacements to game
+				WaterDistribution = false;
+				Reorganisation = false;
+				Attrition = false;
+				//Construction = false;
+				//Training = false;
+				SupplyDistribution = false;
+				TacticalShipping = false;
+			}
+
+			protected override void Entry()
+			{
+				// generate decisions
 				throw new NotImplementedException();
-				// then move to next step as usual
-				if (game.SideIs == Game.Side.Commonwealth)
+			}
+
+			internal override void Execute(Command command)
+			{
+				// handle commands relevant to organisation phase
+				throw new NotImplementedException();
+			}
+
+			private OrganisationSegment CurrentOrganisationSegment;
+
+			private bool WaterDistribution;
+
+			private bool Reorganisation;
+
+			private bool Attrition;
+
+			//private bool Construction;
+
+			//private bool Training;
+
+			private bool SupplyDistribution;
+
+			private bool TacticalShipping;
+
+			internal override void Next()
+			{
+				if (WaterDistribution && Reorganisation && Attrition && /*Construction && Training &&*/ SupplyDistribution && TacticalShipping)
 				{
-					game.TurnState = new CommonwealthFleetPhase(game);
+					game.TurnState = new NavalConvoyArrivalPhase(game);
 				}
-				else
-				{
-					if (game.IsPhasing)
-					{
-						game.TurnState = new ReserveDesignationPhase(game);
-					}
-					else
-					{
-						game.TurnState = new MovementSegment(game);
-					}
-				}
+				
 			}
 		}
 	}
+	
 }

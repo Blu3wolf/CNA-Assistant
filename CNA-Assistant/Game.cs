@@ -107,17 +107,13 @@ namespace CNA_Assistant
 
 		public List<Unit> Units { get; private set; }
 
-		public ReadOnlyDictionary<int, SupplyDump> SupplyDumps { get => new ReadOnlyDictionary<int, SupplyDump>(supplyDumps); }
+		public ReadOnlyDictionary<int, LocationSupplies> SupplyDumps { get => new ReadOnlyDictionary<int, LocationSupplies>(supplyDumps); }
 
-		private Dictionary<int, SupplyDump> supplyDumps { get; } // int is Location ID (replace with Hex later)
+		private Dictionary<int, LocationSupplies> supplyDumps { get; } // int is Location ID (replace with Hex later)
 
 		public ReadOnlyCollection<HungryHex> HungryHexes => hungryHexes.AsReadOnly();
 
 		private List<HungryHex> hungryHexes;
-
-		public Schedule NextTurnSchedule { get; private set; }
-
-		public Schedule ThisTurnSchedule { get; private set; }
 
 		// Methods
 
@@ -130,11 +126,11 @@ namespace CNA_Assistant
 		{
 			if (side == Side.Axis)
 			{
-				if (false) // Rommel Present
+				if (false) // Rommel Present in the field
 				{
 					return 6;
 				}
-				else if (false) // German Units Present
+				else if (false) // German Units Present in the field
 				{
 					return 3;
 				}
@@ -183,10 +179,27 @@ namespace CNA_Assistant
 			}
 
 			// all Fuel and Water sources that have limits also have evaporation. Cairo has no evaporation (unlimited supplies). Cities have no water evaporation (unlimited water). 
-			foreach (SupplyDump dump in SupplyDumps.Values)
+			foreach (LocationSupplies dump in SupplyDumps.Values)
 			{
 				dump.Evaporate(evaporation);
 			}
+		}
+
+		private void EndOpsStage()
+		{
+			foreach (Unit unit in Units)
+			{
+				unit.EndOpsStage();
+			}
+			OpStage += 1;
+		}
+
+		private void NextTurn()
+		{
+			EndOpsStage();
+			GameTurn += 1;
+			OpStage = 0;
+			TurnState = new InitiativeDeterminationStage(this);
 		}
 
 		public Weather GetWeather(int location)

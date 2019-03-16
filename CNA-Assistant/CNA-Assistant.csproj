@@ -70,8 +70,6 @@
     <Compile Include="Command.cs" />
     <Compile Include="CommonwealthFleetPhase.cs" />
     <Compile Include="CommonwealthRailMovementPhase.cs" />
-    <Compile Include="Convoy.cs" />
-    <Compile Include="Decision.cs" />
     <Compile Include="DiceRoll.cs" />
     <Compile Include="ForceAssignmentStep.cs" />
     <Compile Include="HungryHex.cs" />
@@ -80,23 +78,19 @@
     <Compile Include="InitiativeDeclarationPhase.cs" />
     <Compile Include="InitiativeDeterminationStage.cs" />
     <Compile Include="MovementSegment.cs" />
-    <Compile Include="NavalConvoyResolutionPhase.cs" />
-    <Compile Include="NavalConvoySchedulePhase.cs" />
+    <Compile Include="NavalConvoyArrivalPhase.cs" />
     <Compile Include="OrganisationPhase.cs" />
+    <Compile Include="OrganisationSegment.cs" />
     <Compile Include="PatrolPhase.cs" />
     <Compile Include="PositionDeterminationSegment.cs" />
     <Compile Include="RepairPhase.cs" />
     <Compile Include="ReserveDesignationPhase.cs" />
     <Compile Include="ReserveReleaseStep.cs" />
     <Compile Include="RetreatBeforeAssaultStep.cs" />
-    <Compile Include="Schedule.cs" />
-    <Compile Include="Squadron.cs" />
     <Compile Include="StoresExpenditureStage.cs" />
-    <Compile Include="SupplyDump.cs" />
-    <Compile Include="SupplyPoint.cs" />
+    <Compile Include="LocationSupplies.cs" />
     <Compile Include="TOEStrengthPoint.cs" />
     <Compile Include="TOEStrengthPointType.cs" />
-    <Compile Include="Truck.cs" />
     <Compile Include="TruckConvoy.cs" />
     <Compile Include="TruckConvoyMovementPhase.cs" />
     <Compile Include="TurnState.cs" />
@@ -104,6 +98,7 @@
     <Compile Include="UnitCharacteristics.cs" />
     <Compile Include="UnitType.cs" />
     <Compile Include="ICapabilityPoints.cs" />
+    <Compile Include="WaterDistributionSegment.cs" />
     <Compile Include="WeatherDeterminationPhase.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

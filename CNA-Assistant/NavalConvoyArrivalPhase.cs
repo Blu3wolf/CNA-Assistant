@@ -8,48 +8,49 @@ namespace CNA_Assistant
 {
 	public partial class Game
 	{
-		class CloseAssaultStep : TurnState
+		class NavalConvoyArrivalPhase : TurnState
 		{
-			internal CloseAssaultStep(Game game) : base(game)
+			public NavalConvoyArrivalPhase(Game game) : base(game)
 			{
 
 			}
 
 			protected override void Entry()
 			{
-				// generate Decisions - one per Assault? probably more I guess
+				
+
 				throw new NotImplementedException();
 			}
 
 			internal override void Execute(Command command)
 			{
-				// handle commands relevant to the CloseAssault Step
-				// One command allows the non-phasing user to return to the movement segment
+				// add new units to game manually (planned and scheduled arrivals, handled on paper in first release)
 				throw new NotImplementedException();
 			}
 
 			internal override void Next()
 			{
-				if (true) // if no outstanding decisions
+				if (true) // later there will be blocking decisions that complicate the arrivals phase
 				{
-					if (game.IsPhasing)
+					// then move to next step as usual
+					if (game.SideIs == Game.Side.Commonwealth)
 					{
-						game.TurnState = new ReserveReleaseStep(game);
+						game.TurnState = new CommonwealthFleetPhase(game);
 					}
 					else
 					{
-						if (game.GoesSecond)
+						if (game.IsPhasing)
 						{
-							game.IsPhasing = true;
 							game.TurnState = new ReserveDesignationPhase(game);
 						}
 						else
 						{
-							game.NextTurn();
+							game.TurnState = new MovementSegment(game);
 						}
 					}
 				}
 			}
 		}
 	}
+	
 }

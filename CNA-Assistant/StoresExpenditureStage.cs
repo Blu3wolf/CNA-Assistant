@@ -26,7 +26,6 @@ namespace CNA_Assistant
 				{
 					game.Evaporate(Evaporation.Jerrycans);
 				}
-				// try to consume stores for Prisoners
 
 				List<int> Hexes = new List<int>();
 				foreach (Unit unit in game.Units)
@@ -36,12 +35,15 @@ namespace CNA_Assistant
 						Hexes.Add(unit.Location);
 					}
 				}
-				// hexes that are oases automatically have enough stores!
+
+				// Guards consume 2 stores points each (automatically, from nearest source). 
+				// Prisoners consume 3 stores points per 5 prisoners (or fraction thereof)(automatically, from nearest source). 
+
 				foreach (int location in Hexes)
 				{
 					game.hungryHexes.Add(new HungryHex(game, location));
 				}
-				Next();
+
 
 				// hexes with PresentStores == HalfRationsRequired will need to go on half rations
 				// hexes with PresentStores > HalfRationsRequired will need some or all units to go on half rations
@@ -53,6 +55,8 @@ namespace CNA_Assistant
 			{
 
 			}
+
+			private void 
 
 			private void RemoveFedHexes()
 			{
@@ -75,5 +79,7 @@ namespace CNA_Assistant
 				}
 			}
 		}
+
+
 	}
 }
