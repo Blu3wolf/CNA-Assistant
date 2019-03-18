@@ -44,19 +44,14 @@ namespace CNA_Assistant
 					game.hungryHexes.Add(new HungryHex(game, location));
 				}
 
-
-				// hexes with PresentStores == HalfRationsRequired will need to go on half rations
-				// hexes with PresentStores > HalfRationsRequired will need some or all units to go on half rations
-				// hexes with PresentStores < HalfRationsRequired will need all units to go on half rations, and some or all units to go hungry
-
+				Next();
+				// if able skip straight to next phase. Else, there is a list of hungryhexes to resolve
 			}
 
 			internal override void Execute(Command command)
 			{
 
 			}
-
-			private void 
 
 			private void RemoveFedHexes()
 			{

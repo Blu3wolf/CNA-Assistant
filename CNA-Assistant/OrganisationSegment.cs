@@ -18,6 +18,16 @@ namespace CNA_Assistant
 				}
 
 				protected OrganisationPhase OrganisationPhase { get; }
+
+				internal abstract bool CanContinue();
+
+				internal override void Next()
+				{
+					if (CanContinue())
+					{
+						game.TurnState = OrganisationPhase;
+					}
+				}
 			}
 		}
 	}

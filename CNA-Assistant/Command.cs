@@ -23,12 +23,11 @@ namespace CNA_Assistant
 		public enum Type
 		{
 			DetermineInitiative,
-			AxisDetermineNextShippingLimit,
-			AxisSetConvoy,
 			DeclareInitiative,
 			DetermineWeather,
 
-			PlanReplacements,
+			SelectPhase,
+
 			AssignFleet,
 			AssignReserve,
 			Move,

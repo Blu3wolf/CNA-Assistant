@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CNA_Assistant
 {
-	public partial class Game : IGameCommands
+	public partial class Game
 	{
 		/* The top level object that represents the entire Game model. A reference to the PlayerSide is the primary tool required by the ViewModel, to manipulate the game state.
 		 * All units the user has, the current game turn, all of it. Saving the game represents essentially writing the state of the PlayerSide to disc. Loading the game, creating
@@ -115,6 +115,10 @@ namespace CNA_Assistant
 
 		private List<HungryHex> hungryHexes;
 
+		public ReadOnlyCollection<int> Oases => oases.AsReadOnly();
+
+		private List<int> oases;
+
 		// Methods
 
 		public void NextPhase()
@@ -122,48 +126,9 @@ namespace CNA_Assistant
 			TurnState.Next();
 		}
 
-		public int GetInitiativeRating(Side side) // move to InitiativeDeterminationStage perhaps?
-		{
-			if (side == Side.Axis)
-			{
-				if (false) // Rommel Present in the field
-				{
-					return 6;
-				}
-				else if (false) // German Units Present in the field
-				{
-					return 3;
-				}
-				else return 1;
-			}
-			else
-			{
-				if (GameTurn >= 91)
-				{
-					return 5;
-				}
-				else if (GameTurn >= 43)
-				{
-					return 4;
-				}
-				else return 3;
-			}
-		}
-
-		public void DetermineInitiative(DiceRoll diceRoll, DiceRoll enemyRoll)
-		{
-			TurnState.Execute(new Command(Command.Type.DetermineInitiative, diceRoll, enemyRoll));
-		}
-
 		public void DetermineInitiative(bool hasInitiative)
 		{
 			TurnState.Execute(new Command(Command.Type.DetermineInitiative, hasInitiative));
-		}
-
-		public void SetNextTurnShippingLimit(DiceRoll diceRoll)
-		{
-			TurnState.Execute(new Command(Command.Type.AxisDetermineNextShippingLimit, diceRoll));
-
 		}
 
 		public enum Evaporation
@@ -231,12 +196,6 @@ namespace CNA_Assistant
 			
 		}
 
-		public void TestSkipToNextGameTurn()
-		{
-			GameTurn += 1;
-			OpStage = 0;
-		}
-
 		public void TestGetDateAtTurn(int gt, int os)
 		{
 			int curGameTurn = GameTurn;
@@ -258,10 +217,5 @@ namespace CNA_Assistant
 			GameTurn = curGameTurn;
 			OpStage = curOpStage;
 		}
-	}
-
-	public enum ShippingLanes
-	{
-		SicilyBizerta, SicilyTripoli, ItalyBenghazi, GreeceBenghazi, GreeceTobruk, ItalyTobruk
 	}
 }

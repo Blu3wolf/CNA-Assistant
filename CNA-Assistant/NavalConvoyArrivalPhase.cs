@@ -32,12 +32,12 @@ namespace CNA_Assistant
 			{
 				if (true) // later there will be blocking decisions that complicate the arrivals phase
 				{
-					// then move to next step as usual
-					if (game.SideIs == Game.Side.Commonwealth)
+					// then move to next step as usual - for now, skip Fleet Movement and Repair steps
+					/*if (game.SideIs == Game.Side.Commonwealth)
 					{
 						game.TurnState = new CommonwealthFleetPhase(game);
 					}
-					else
+					else*/
 					{
 						if (game.IsPhasing)
 						{

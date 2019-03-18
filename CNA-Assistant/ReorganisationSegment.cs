@@ -10,16 +10,15 @@ namespace CNA_Assistant
 	{
 		partial class OrganisationPhase
 		{
-			private class WaterDistributionSegment : OrganisationSegment
+			private class ReorganisationSegment : OrganisationSegment
 			{
-				public WaterDistributionSegment(Game game, OrganisationPhase orgPhase) : base(game, orgPhase)
+				public ReorganisationSegment(Game game, OrganisationPhase organisationPhase) : base(game, organisationPhase)
 				{
 
 				}
 
 				protected override void Entry()
 				{
-					// water is distributed to units
 					throw new NotImplementedException();
 				}
 
@@ -35,5 +34,4 @@ namespace CNA_Assistant
 			}
 		}
 	}
-
 }

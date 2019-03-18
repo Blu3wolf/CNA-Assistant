@@ -8,9 +8,9 @@ namespace CNA_Assistant
 {
 	public partial class Game
 	{
-		class TruckConvoyMovementPhase : TurnState
+		class RailMovementPhase : TurnState
 		{
-			internal TruckConvoyMovementPhase(Game game) : base(game)
+			internal RailMovementPhase(Game game) : base(game)
 			{
 
 			}
@@ -22,16 +22,12 @@ namespace CNA_Assistant
 
 			internal override void Execute(Command command)
 			{
-				// handle commands relevant during truck convoy movement phase
 				throw new NotImplementedException();
 			}
 
 			internal override void Next()
 			{
-				if (Decisions.Count() == 0)
-				{
-					game.TurnState = new RailMovementPhase(game);
-				}
+				game.TurnState = new RepairPhase(game);
 			}
 		}
 	}

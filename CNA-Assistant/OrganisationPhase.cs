@@ -14,7 +14,7 @@ namespace CNA_Assistant
 			{
 				WaterDistribution = false;
 				Reorganisation = false;
-				Attrition = false;
+				attrition = false;
 				//Construction = false;
 				//Training = false;
 				SupplyDistribution = false;
@@ -29,17 +29,66 @@ namespace CNA_Assistant
 
 			internal override void Execute(Command command)
 			{
-				// handle commands relevant to organisation phase
+
+				switch (command.CommandType)
+				{
+					case Command.Type.SelectPhase:
+						if (command.Params[0] is OrganisationSegmentType)
+						{
+							switch (command.Params[0])
+							{
+								case OrganisationSegmentType.WaterDistribution:
+									if (!WaterDistribution)
+									{
+										WaterDistribution = true;
+										game.TurnState = new WaterDistributionSegment(game, this);
+									}
+									break;
+								case OrganisationSegmentType.Reorganisation:
+									if (!Reorganisation)
+									{
+										Reorganisation = true;
+										game.TurnState = new ReorganisationSegment(game, this);
+									}
+									break;
+								case OrganisationSegmentType.Attrition:
+									// there are no options as to what happens here - no decisions. So this is effectively a method, not a Segment. 
+									if (!attrition)
+									{
+										Attrition();
+										attrition = true;
+									}
+									break;
+								case OrganisationSegmentType.SupplyDistribution:
+									if (!SupplyDistribution)
+									{
+										SupplyDistribution = true;
+										game.TurnState = new SupplyDistributionSegment(game, this);
+									}
+									break;
+								case OrganisationSegmentType.TacticalShipping:
+									if (!TacticalShipping)
+									{
+										TacticalShipping = true;
+										game.TurnState = new TacticalShippingSegment(game, this);
+									}
+									break;
+								default:
+									break;
+							}
+						}
+						break;
+					default:
+						break;
+				}
 				throw new NotImplementedException();
 			}
-
-			private OrganisationSegment CurrentOrganisationSegment;
 
 			private bool WaterDistribution;
 
 			private bool Reorganisation;
 
-			private bool Attrition;
+			private bool attrition;
 
 			//private bool Construction;
 
@@ -49,14 +98,28 @@ namespace CNA_Assistant
 
 			private bool TacticalShipping;
 
+			private void Attrition()
+			{
+
+			}
+
 			internal override void Next()
 			{
-				if (WaterDistribution && Reorganisation && Attrition && /*Construction && Training &&*/ SupplyDistribution && TacticalShipping)
+				if (WaterDistribution && Reorganisation && attrition && /*Construction && Training &&*/ SupplyDistribution && TacticalShipping)
 				{
 					game.TurnState = new NavalConvoyArrivalPhase(game);
 				}
 				
 			}
+		}
+
+		public enum OrganisationSegmentType
+		{
+			WaterDistribution,
+			Reorganisation,
+			Attrition,
+			SupplyDistribution,
+			TacticalShipping
 		}
 	}
 	

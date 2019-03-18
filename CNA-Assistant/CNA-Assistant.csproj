@@ -55,8 +55,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Aircraft.cs" />
-    <Compile Include="AirFacility.cs" />
     <Compile Include="AntiArmorStep.cs" />
     <Compile Include="Barrage.cs" />
     <Compile Include="BarrageEffects.cs" />
@@ -68,8 +66,7 @@
     <Compile Include="CombatStats.cs" />
     <Compile Include="CombatUnit.cs" />
     <Compile Include="Command.cs" />
-    <Compile Include="CommonwealthFleetPhase.cs" />
-    <Compile Include="CommonwealthRailMovementPhase.cs" />
+    <Compile Include="RailMovementPhase.cs" />
     <Compile Include="DiceRoll.cs" />
     <Compile Include="ForceAssignmentStep.cs" />
     <Compile Include="HungryHex.cs" />
@@ -83,12 +80,15 @@
     <Compile Include="OrganisationSegment.cs" />
     <Compile Include="PatrolPhase.cs" />
     <Compile Include="PositionDeterminationSegment.cs" />
+    <Compile Include="ReorganisationSegment.cs" />
     <Compile Include="RepairPhase.cs" />
     <Compile Include="ReserveDesignationPhase.cs" />
     <Compile Include="ReserveReleaseStep.cs" />
     <Compile Include="RetreatBeforeAssaultStep.cs" />
     <Compile Include="StoresExpenditureStage.cs" />
     <Compile Include="LocationSupplies.cs" />
+    <Compile Include="SupplyDistributionSegment.cs" />
+    <Compile Include="TacticalShippingSegment.cs" />
     <Compile Include="TOEStrengthPoint.cs" />
     <Compile Include="TOEStrengthPointType.cs" />
     <Compile Include="TruckConvoy.cs" />

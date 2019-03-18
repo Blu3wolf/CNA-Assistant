@@ -100,6 +100,8 @@ namespace CNA_Assistant
 
 		public bool IsFed {	get; private set; }
 
+		// methods
+
 		public void FeedHex()
 		{
 			if (CanFeed && !IsFed)
